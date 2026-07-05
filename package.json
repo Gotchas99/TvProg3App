@@ -1,0 +1,18 @@
+{
+  "name": "node_temp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "tizen:package": "tizen package -t wgt -s <YOUR_CERTIFICATE_PROFILE> -- ./dist",
+    "tizen:install": "tizen install -n MyTVApp.wgt -t <YOUR_TV_TARGET_NAME>",
+    "tizen:run": "tizen run -p abcdefghij.MyTVApp -t <YOUR_TV_TARGET_NAME>"
+  },
+  "devDependencies": {
+    "vite": "^8.1.1"
+  }
+}
