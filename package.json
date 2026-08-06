@@ -10,7 +10,7 @@
     "build vite and tz": "vite build && tz build",
     "preview": "vite preview",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build tz": "tz clean && tz build",
+    "build/pack tz": "rm -fr Debug/projects/TvProg3App/* && tz pack",
     "clean tz": "tz clean",
     "clean rm": "rm -r Debug/*"
   },
