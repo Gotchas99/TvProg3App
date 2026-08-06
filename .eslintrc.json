@@ -1,19 +1,20 @@
 {
     "env": {
         "browser": true,
-        "es2017": true
+        "es2017": true,
+        "amd": true
     },
     "parserOptions": {
         "ecmaVersion": 2017,
         "sourceType": "script"
     },
     "globals": {
-        "tizen": "readonly",
         "webapis": "readonly",
         "focusItemNo": "writable",
         "links": "writable",
         "setFocus": "readonly",
-        "clamp": "readonly"
+        "clamp": "readonly",
+        "requirejs": "readonly"
     },
     "rules": {
         "no-undef": "error",
@@ -41,8 +42,9 @@
         "no-duplicate-case": "error",
         "curly": [
             "error",
-            "multi-line"
-        ]
+            "multi"
+        ],
+        "nonblock-statement-body-position": "off"
     },
     "overrides": [
         {
@@ -54,8 +56,9 @@
             }
         }
     ],
-    "ignores": [
+    "ignorePatterns": [
+        "3rd_party",
         "spatial_navigation.js",
-        "requires.js"
+        "require.js"
     ]
 }

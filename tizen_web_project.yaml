@@ -12,7 +12,7 @@ build_type: Debug
 output_name: TvProg3App
 
 # Output path for build
-output_path: "to_tv"
+output_path: ""
 
 # Enable size optimization of wgt for web workspace
 opt: false

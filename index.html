@@ -4,49 +4,42 @@
     <meta charset="UTF-8" />
     <title>asdf</title>
     <link rel="icon" type="image/png" href="icon.png" />
-    <link rel="stylesheet" type="text/css" href="style.css"/>
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script data-main="src/main" src="src/3rd_party/require.js"></script>
   </head>
   <body>
-  <div class="flex-item">
-    <h1>TvProgram3-App</h1>
-  </div>
+    <!-- <div>
+        hej
+        <button type="button" onclick="logThis(42)">hopp</button>
+    </div> -->
+    <div class="layout">
+      <nav id="sidemenu" class="sidemenu">
+        <h2>Navigation</h2>
+        <ul>
+          <li><a href="#" data-target="panel-showlist">Show list</a></li>
+          <li><a href="#" data-target="panel-blacklist">Blacklist</a></li>
+          <li><a href="#" data-target="panel-want">Want to see</a></li>
+          <li><a href="#" data-target="panel-what">What to see</a></li>
+          <li><a href="#" data-target="panel-settings">Settings</a></li>
+        </ul>
+      </nav>
 
-  <div class="flex-item">
-    <button id="my-action-btn" class="tv-button">Click Me</button>
-  </div>
+      <main class="content">
+        <!-- <h1>Main Content Area</h1>
+            <p>This area automatically expands to take up the remaining width.</p> -->
+        <section id="panel-home" class="view-panel active">
+          <h2>Welcome</h2>
+        </section>
 
-  <div id="res" class="flex-item">
+        <section id="panel-settings" class="view-panel hidden">
+          <h2>Settings Form</h2>
+          <input type="text" id="setting-name" placeholder="Name" />
+          <button id="btn-save">Save</button>
+        </section>
+        <textarea name="log" id="log" rows="5" cols="80"></textarea>
+      </main>
     </div>
-
-    <div class="flex-item">
-      <img src="https://www.themoviedb.org/assets/2/v4/logos/v2/blue_long_2-9665a76b1ae401a510ec1e0ca40ddcb3b0cfe45f1d51b77a308fea0845885648.svg" width="300px" height="22px" flex-grow="0" />
-    </div>
-
-    <script>
-      // 2. The JavaScript Event Procedure
-      function handleButtonClick(event) {
-        console.log("Button click event procedure triggered!");
-            // alert("Action processed successfully.");
-        var res=document.getElementById("res")
-        res.innerText=Date()
-        }
-
-        // 3. Registering the Event Procedure when the window loads
-        window.onload = function() {
-            var btn = document.getElementById("my-action-btn");
-
-            if (btn) {
-                // Attach our event procedure to the 'click' event listener
-                btn.addEventListener("click", handleButtonClick);
-
-                // For TV focus navigation flow, explicitly give the button focus
-                btn.focus();
-            }
-        };
-    </script>
-
     <div id="app"></div>
-    <script type="module" src="/src/main.js"></script>
   </body>
 </html>
