@@ -1,0 +1,11 @@
+{
+    "terminal.integrated.env.windows": {
+        "PATH": "${env:PATH};C:\\Users\\chris\\.tizen-extension-platform\\server\\sdktools\\data\\tools\\tizen-core"
+    },
+    "files.exclude": {
+        "**/Debugx": true
+    },
+    "files.watcherExclude": {
+        "**/Debugx/**": true
+    }
+}

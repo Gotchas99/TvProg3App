@@ -5,12 +5,15 @@ logs
 *.log
 npm-debug.log*
 
+node_modules
+
+#Build output
 dist
 dist-ssr
-node_modules
 public/Debug
+Debug
+
 *.local
 
 # Editor directories and files
-.vscode/*
 !.vscode/extensions.json
