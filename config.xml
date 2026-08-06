@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widget xmlns="http://www.w3.org/ns/widgets"
+   xmlns:tizen="http://tizen.org/ns/widgets" id="http://yourdomain/A123456789" version="0.2.1" viewmodes="fullscreen">
+   <name>TvProg3App</name>
+   <tizen:application id="A123456789.public" package="A123456789" required_version="4.0" />
+   <!-- needs hardcoded id  -->
+   <!-- <tizen:application id="ekLD7ucpMB.TvProg3App" package="ekLD7ucpMB" required_version="4.0" /> -->
+   <icon src="icon.png"></icon>
+   <content src="index.html"></content>
+
+   <!-- This handles network calls safely without triggering a privilege block -->
+   <access origin="*" subdomains="true"></access>
+   <tizen:setting screen-orientation="landscape" context-menu="enable" background-support="disable" encryption="disable" install-location="auto" hwkey-event="enable"></tizen:setting>
+   <!-- application.launch not allowed without partner-cert -->
+   <!-- <tizen:privilege name="http://tizen.org/privilege/application.launch"></tizen:privilege> -->
+   <!-- network.public not allowed without partner-cert -->
+   <!-- <tizen:privilege name="http://developer.samsung.com/privilege/network.public"></tizen:privilege> -->
+   <!-- <tizen:metadata key="http://samsung.com/tv/metadata/prelaunch.support" value="true"></tizen:metadata> -->
+   <tizen:metadata key="http://tizen.org/metadata/app_ui_type/base_screen_resolution" value="extensive"></tizen:metadata>
+   <tizen:profile name="tv-samsung" version="4.0" />
+</widget>

@@ -1,0 +1,42 @@
+/* Container Layout */
+.layout {
+  display: grid;
+  /* Left column: fixed at 250px (or 16rem); Right column: fills remaining space */
+  grid-template-columns: 250px 1fr;
+  min-height: 100vh;
+}
+
+/* Optional Sidebar Styling */
+.sidemenu {
+  background-color: #1e293b;
+  color: #ffffff;
+  padding: 1.5rem;
+}
+
+.sidemenu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidemenu a {
+  color: #cbd5e1;
+  text-decoration: none;
+  display: block;
+  padding: 0.5rem 0;
+}
+
+/* Optional Main Area Styling */
+.content {
+  background-color: #f8fafc;
+  padding: 2rem;
+}
+
+.focused {
+  font-weight: bold;
+  background-color: #051f49;
+}
+
+:focus {
+  outline: 3px solid #ff0000;
+}

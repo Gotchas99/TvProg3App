@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "checkJs": true,
+    "strictNullChecks": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "target": "ES2017",
+    "lib": [
+      "DOM",
+      "ES2017"
+    ]
+  },
+  "exclude": [
+    "node_modules",
+    "dist",
+    ".git"
+  ]
+}

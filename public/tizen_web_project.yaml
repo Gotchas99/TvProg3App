@@ -12,7 +12,7 @@ build_type: Debug
 output_name: TvProg3App
 
 # Output path for build
-output_path: "to_tv"
+output_path: ""
 
 # Enable size optimization of wgt for web workspace
 opt: false
@@ -27,20 +27,11 @@ trust_anchor: []
 
 # list of files in web project (.html,.css etc) and resources
 files:
-  - config.xml
-  - css/style.css
   - icon.png
-  - index.html
-  - main.js
+  - style.css
 
 # list of files to exclude based on the matched patterns
 excludes:
-  - ".git/**"
-  - ".vscode/**"
-  - "node_modules/**"
-  - "README.md"
-  - "vite.config.js"
-  - "tizen_web_project.yaml"
   - Build/*
   - Debug/*
   - Directory.Build.targets
@@ -66,3 +57,4 @@ excludes:
 
 # project dependencies
 deps: []
+

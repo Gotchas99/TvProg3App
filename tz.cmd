@@ -1,0 +1,1 @@
+C:\\Users\\chris\\.tizen-extension-platform\\server\\sdktools\\data\\tools\\tizen-core\\tz.exe %*

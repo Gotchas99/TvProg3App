@@ -2,12 +2,51 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>asdf</title>
+    <link rel="icon" type="image/png" href="icon.png" />
+    <link rel="stylesheet" type="text/css" href="style.css"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   </head>
   <body>
-    <div id="app"></div>asd
+  <div class="flex-item">
+    <h1>TvProgram3-App</h1>
+  </div>
+
+  <div class="flex-item">
+    <button id="my-action-btn" class="tv-button">Click Me</button>
+  </div>
+
+  <div id="res" class="flex-item">
+    </div>
+
+    <div class="flex-item">
+      <img src="https://www.themoviedb.org/assets/2/v4/logos/v2/blue_long_2-9665a76b1ae401a510ec1e0ca40ddcb3b0cfe45f1d51b77a308fea0845885648.svg" width="300px" height="22px" flex-grow="0" />
+    </div>
+
+    <script>
+      // 2. The JavaScript Event Procedure
+      function handleButtonClick(event) {
+        console.log("Button click event procedure triggered!");
+            // alert("Action processed successfully.");
+        var res=document.getElementById("res")
+        res.innerText=Date()
+        }
+
+        // 3. Registering the Event Procedure when the window loads
+        window.onload = function() {
+            var btn = document.getElementById("my-action-btn");
+
+            if (btn) {
+                // Attach our event procedure to the 'click' event listener
+                btn.addEventListener("click", handleButtonClick);
+
+                // For TV focus navigation flow, explicitly give the button focus
+                btn.focus();
+            }
+        };
+    </script>
+
+    <div id="app"></div>
     <script type="module" src="/src/main.js"></script>
   </body>
 </html>
