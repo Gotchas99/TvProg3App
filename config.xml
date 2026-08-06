@@ -2,7 +2,7 @@
 <widget xmlns="http://www.w3.org/ns/widgets"
    xmlns:tizen="http://tizen.org/ns/widgets" id="http://yourdomain/A123456789" version="0.2.1" viewmodes="fullscreen">
    <name>TvProg3App</name>
-   <tizen:application id="A123456789.public" package="A123456789" required_version="4.0" />
+   <tizen:application id="A123456789.TvProg3App" package="A123456789" required_version="4.0" />
    <!-- needs hardcoded id  -->
    <!-- <tizen:application id="ekLD7ucpMB.TvProg3App" package="ekLD7ucpMB" required_version="4.0" /> -->
    <icon src="icon.png"></icon>
