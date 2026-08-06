@@ -25,44 +25,44 @@ signing_profile: ""
 # list of certs in web project (.trust-anchor)
 trust_anchor: []
 
+# Correct relative format
+root_path: ""
+
 # list of files in web project (.html,.css etc) and resources
+# all files are included, unless explicitly excluded !!!
 files:
-  - config.xml
-  - css/style.css
-  - icon.png
-  - index.html
-  - main.js
+  - "*"
 
 # list of files to exclude based on the matched patterns
 excludes:
-  - ".git/**"
-  - ".vscode/**"
-  - "node_modules/**"
-  - "README.md"
-  - "vite.config.js"
-  - "tizen_web_project.yaml"
+  - .git
+  - .vscode
+  - dist/*
   - Build/*
   - Debug/*
-  - Directory.Build.targets
-  - Release/*
-  - Test/*
-  - \.Build/.*
-  - \.buildResult/.*
-  - \.csproj
-  - \.externalToolBuilders/.*
-  - \.gn
-  - \.obj/.*
-  - \.package/.*
-  - \.project
-  - \.rds_delta
-  - \.sdk_delta.info
-  - \.settings/.*
-  - \.sign/.*
-  - \.tizen-ui-builder-tool.xml
-  - \.tproject
-  - \.wgt
-  - tizen_web_project.yaml
-  - webUnitTest/*
+  - node_modules/*
+  - src/old
+  - .env.local
+  - .eslintrc.json
+  - jsconfig.json
+  - LICENSE
+  - NOTES.md
+  - README.md
+  - package*
+  - tz.cmd
+  - vite.config.js
+
+  # - .vscode/*
+  # - .gitignore
+  # - .env.local
+  # - .eslintrc.json
+  # - jsconfig.json
+  # - LICENSE
+  # - NOTES.md
+  # - package-lock.json
+  # - package.json
+  # - tizen_web_project.yaml
+  # - vite-config.js
 
 # project dependencies
 deps: []
