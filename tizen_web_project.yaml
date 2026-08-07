@@ -44,6 +44,7 @@ excludes:
   - src/old
   - .env.local
   - .eslintrc.json
+  - Dockerfile.tizen
   - jsconfig.json
   - LICENSE
   - NOTES.md
@@ -51,18 +52,6 @@ excludes:
   - package*
   - tz.cmd
   - vite.config.js
-
-  # - .vscode/*
-  # - .gitignore
-  # - .env.local
-  # - .eslintrc.json
-  # - jsconfig.json
-  # - LICENSE
-  # - NOTES.md
-  # - package-lock.json
-  # - package.json
-  # - tizen_web_project.yaml
-  # - vite-config.js
 
 # project dependencies
 deps: []

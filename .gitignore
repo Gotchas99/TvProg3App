@@ -14,6 +14,7 @@ public/Debug
 Debug
 
 *.local
+chrome-linux
 
 # Editor directories and files
 !.vscode/extensions.json

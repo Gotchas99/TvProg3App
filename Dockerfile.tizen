@@ -1,0 +1,34 @@
+FROM ubuntu:16.04
+
+# Install only the core dynamic libraries required by Chromium 56
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    libgtk2.0-0 \
+    libnss3 \
+    libgconf-2-4 \
+    libasound2 \
+    libxtst6 \
+    libx11-xcb1 \
+    libxcb1 \
+    libxcomposite1 \
+    libxcursor1 \
+    libxdamage1 \
+    libxext6 \
+    libxfixes3 \
+    libxi6 \
+    libxrandr2 \
+    libxrender1 \
+    libxss1 \
+    libatk1.0-0 \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy your local portable chrome folder into the container
+COPY chrome-linux /opt/chrome-linux
+
+# Suppress "Google API keys are missing" startup warning
+ENV GOOGLE_API_KEY="no"
+ENV GOOGLE_DEFAULT_CLIENT_ID="no"
+ENV GOOGLE_DEFAULT_CLIENT_SECRET="no"
+
+# Use strict exec form (array syntax)
+ENTRYPOINT ["/opt/chrome-linux/chrome"]
+CMD ["--disable-gpu", "--user-data-dir=/tmp/chrome", "http://localhost:5173/"]

@@ -7,7 +7,7 @@
             "url": "http://localhost:5173",
             "webRoot": "${workspaceFolder}",
             "userDataDir": true,
-            "preLaunchTask": "npm: dev",
+            "preLaunchTask": "Start Vite Server",
             "runtimeArgs": [
                 "--hide-crash-restore-bubble",
                 "--no-first-run",
@@ -15,11 +15,12 @@
             ]
         },
         {
-            "name": "Attach to Chrome",
-            "port": 5173,
-            "request": "attach",
-            "type": "chrome",
-            "webRoot": "${workspaceFolder}"
+            "name": "Docker Launch Tizen 4",
+            "type": "node-terminal",
+            "request": "launch",
+            "command": "docker run --rm -it --net=host --privileged -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix chrome56-tizen-test",
+            "cwd": "${workspaceFolder}",
+            "preLaunchTask": "Prepare Environment"
         }
     ]
 }

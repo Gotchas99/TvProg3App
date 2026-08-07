@@ -2,6 +2,7 @@
   "version": "2.0.0",
   "tasks": [
     {
+      "label": "Start Vite Server",
       "type": "npm",
       "script": "dev",
       "isBackground": true,
@@ -19,8 +20,48 @@
           "beginsPattern": ".*",
           "endsPattern": "ready in|Local:"
         }
+      }
+    },
+    {
+      "label": "Set X11 Permissions",
+      "type": "shell",
+      "command": "xhost +local:docker",
+      "problemMatcher": []
+    },
+    {
+      "label": "Prepare Environment",
+      "dependsOn": [
+        // "Start Vite Server",
+        "Set X11 Permissions"
+      ],
+      "problemMatcher": []
+    },
+    {
+      "label": "Rebuild Tizen 4 Docker Image (Manual)",
+      "type": "shell",
+      "command": "docker build -f Dockerfile.tizen -t chrome56-tizen-test .",
+      "problemMatcher": []
+    },
+    {
+      "label": "Ollama: Load Code Model",
+      "type": "shell",
+      "command": "ollama run qwen2.5-coder:0.5b ''",
+      "runOptions": {
+        "runOn": "folderOpen"
       },
-      "label": "npm: dev"
+      "presentation": {
+        "reveal": "silent",
+        "panel": "shared"
+      }
+    },
+    {
+      "label": "Ollama: Stop Model & Free RAM",
+      "type": "shell",
+      "command": "ollama stop qwen2.5-coder:0.5b",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      }
     }
   ]
 }

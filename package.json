@@ -2,7 +2,6 @@
   "name": "TvProg3App",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
   "scripts": {
     "dev": "vite",
     "lint": "eslint .",
@@ -14,7 +13,6 @@
     "clean tz": "tz clean",
     "clean rm": "rm -r Debug/*"
   },
-  "dependencies": {},
   "devDependencies": {
     "@types/requirejs": "^2.1.37",
     "@types/tizen-tv-webapis": "^2.0.9",

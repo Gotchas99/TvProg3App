@@ -7,6 +7,7 @@ export default defineConfig({
 
   build: {
     // Keeps your output targeting your Tizen 4.0 Chrome 56 environment
-    target: "chrome56"
+    target: "chrome56"  // Ensures output JS/CSS is fully compatible with Chromium 56
+    , cssTarget: 'chrome56'
   }
 });
