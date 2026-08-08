@@ -16,6 +16,7 @@
   "devDependencies": {
     "@types/requirejs": "^2.1.37",
     "@types/tizen-tv-webapis": "^2.0.9",
+    "@vitejs/plugin-legacy": "^8.2.3",
     "eslint": "^8.57.1",
     "vite": "^8.1.1"
   }

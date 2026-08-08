@@ -57,11 +57,24 @@ body {
   padding: 0.5rem 0;
 }
 
-.focused {
-  font-weight: bold;
-  background-color: #051f49;
-}
-
 :focus {
   outline: 3px solid #ff0000;
+}
+
+/* Show outline only when navigating via keyboard / TV remote D-pad */
+:focus-visible {
+  outline: 3px solid #ff0000;
+}
+
+/* Hide all pages by default */
+.view-panel {
+  display: none;
+  /* width: 100%;
+  height: 100%; */
+}
+
+/* Active page display state */
+.view-panel.active {
+  display: block;
+  /* Use display: flex or grid if required by your layout */
 }

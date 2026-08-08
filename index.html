@@ -1,45 +1,110 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>asdf</title>
-    <link rel="icon" type="image/png" href="icon.png" />
-    <link rel="stylesheet" type="text/css" href="css/style.css" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script data-main="src/main" src="src/3rd_party/require.js"></script>
-  </head>
-  <body>
-    <!-- <div>
+
+<head>
+  <meta charset="UTF-8" />
+  <title>asdf</title>
+  <link rel="icon" type="image/png" href="icon.png" />
+  <link rel="stylesheet" type="text/css" href="css/style.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <script data-main="src/main" src="src/3rd_party/require.js"></script>
+  <!-- Version/Feature Guard for Chrome 56 / Tizen 4 Dev Reloading -->
+  <script>
+    (function () {
+      // Chrome 56 is Chrome v56; import.meta support started in Chrome 80
+      var rawMatch = navigator.userAgent.match(/Chrome\/(\d+)/);
+      var chromeVersion = rawMatch ? parseInt(rawMatch[1], 10) : 999;
+
+      // Guard: Only run custom WebSocket polling on old Chromium engines (< Chrome 60)
+      // Chrome 56 in docker presents as "Chrome/57"
+      if (chromeVersion < 60) {
+        console.log("Chrome < 60");
+        var host = window.location.host;
+        var ws = new WebSocket('ws://' + host + '/');
+
+        ws.onmessage = function (event) {
+          try {
+            var data = JSON.parse(event.data);
+            // Vite broadcasts 'full-reload' or 'update' on file saves
+            if (data.type === 'full-reload' || data.type === 'update') {
+              window.location.reload();
+            }
+          } catch (e) {
+            // Ignore non-JSON system frames
+          }
+        };
+
+        ws.onclose = function () {
+          // Auto-reconnect if dev server restarts
+          setTimeout(function () {
+            window.location.reload();
+          }, 2000);
+        };
+      }
+      else console.log("modern browser");
+    })();
+  </script>
+</head>
+
+<body>
+  <!-- <div>
         hej
         <button type="button" onclick="logThis(42)">hopp</button>
     </div> -->
-    <div class="layout">
-      <nav id="sidemenu" class="sidemenu">
-        <h2>Navigation X</h2>
-        <ul>
-          <li><a href="#" data-target="panel-showlist">Show list</a></li>
-          <li><a href="#" data-target="panel-blacklist">Blacklist</a></li>
-          <li><a href="#" data-target="panel-want">Want to see</a></li>
-          <li><a href="#" data-target="panel-what">What to see</a></li>
-          <li><a href="#" data-target="panel-settings">Settings</a></li>
-        </ul>
-      </nav>
+  <div class="layout">
+    <nav id="sidemenu" class="sidemenu">
+      <h2>Navigation</h2>
+      <ul>
+        <li><a href="#" data-target="panel-showlist">Show list</a></li>
+        <li><a href="#" data-target="panel-blacklist">Blacklist</a></li>
+        <li><a href="#" data-target="panel-want">Want to see</a></li>
+        <li><a href="#" data-target="panel-what">What to see</a></li>
+        <li><a href="#" data-target="panel-settings">Settings</a></li>
+      </ul>
+    </nav>
 
-      <main class="content">
-        <!-- <h1>Main Content Area</h1>
+    <main id="panels" class="content">
+      <!-- <h1>Main Content Area</h1>
             <p>This area automatically expands to take up the remaining width.</p> -->
-        <section id="panel-home" class="view-panel active">
-          <h2>Welcome</h2>
-        </section>
+      <section id="panel-home" class="view-panel_X ">
+        <h2>Welcome</h2>
+      </section>
 
-        <section id="panel-settings" class="view-panel hidden">
-          <h2>Settings Form</h2>
-          <input type="text" id="setting-name" placeholder="Name" />
-          <button id="btn-save">Save</button>
-        </section>
-        <textarea name="log" id="log" rows="5" cols="80"></textarea>
-      </main>
-    </div>
-    <div id="app"></div>
-  </body>
+      <section id="panel-default" class="view-panel active">
+        <h2>Default page</h2>
+        <input type="text" id="setting-name" placeholder="Name" />
+        <button id="btn-save">Save</button>
+      </section>
+      <section id="panel-showlist" class="view-panel ">
+        <h2>Showlist</h2>
+        <input type="text" id="setting-name" placeholder="Name" />
+        <button id="btn-save">Save</button>
+      </section>
+      <section id="panel-blacklist" class="view-panel ">
+        <h2>Blacklist</h2>
+        <input type="text" id="setting-name" placeholder="Name" />
+        <button id="btn-save">Save</button>
+      </section>
+      <section id="panel-want" class="view-panel ">
+        <h2>Want to see</h2>
+        <input type="text" id="setting-name" placeholder="Name" />
+        <button id="btn-save">Save</button>
+      </section>
+      <section id="panel-what" class="view-panel ">
+        <h2>What to see next</h2>
+        <input type="text" id="setting-name" placeholder="Name" />
+        <button id="btn-save">Save</button>
+      </section>
+      <section id="panel-settings" class="view-panel ">
+        <h2>Settings Form</h2>
+        <input type="text" id="setting-name" placeholder="Name" />
+        <button id="btn-save">Save</button>
+      </section>
+      <hr>
+      <textarea name="log" id="log" rows="5" cols="80"></textarea>
+    </main>
+  </div>
+  <div id="app"></div>
+</body>
+
 </html>

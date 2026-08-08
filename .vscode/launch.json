@@ -1,6 +1,33 @@
 {
     "configurations": [
         {
+            "type": "firefox",
+            "request": "launch",
+            "reAttach": true,
+            "reloadOnAttach": true,
+            "name": "Fox Launch",
+            "url": "http://localhost:5173",
+            "webRoot": "${workspaceFolder}",
+            "preferences": {
+                "browser.cache.disk.enable": false,
+                "browser.cache.memory.enable": false,
+                "devtools.debugger.remote-enabled": true
+            }
+        },
+        {
+            "type": "firefox",
+            "request": "attach",
+            "name": "Fox Attach",
+            "url": "http://localhost:5173",
+            "webRoot": "${workspaceFolder}",
+            "pathMappings": [
+                {
+                    "url": "http://localhost:5173",
+                    "path": "${workspaceFolder}"
+                }
+            ]
+        },
+        {
             "name": "Launch Chrome",
             "request": "launch",
             "type": "chrome",

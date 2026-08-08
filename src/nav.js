@@ -1,124 +1,137 @@
-define(["3rd_party/spatial_navigation"], function (SpatialNavigation) {
-  /**
-   * Sets focus to a specific navigation index.
-   * @param {number} item - Index of the link to focus.
-   * @returns {void}
-   */
-  function setFocusX(item) {
-    focusItemNumber = item;
-    navLinks[focusItemNumber].focus();
-  }
+define(["3rd_party/spatial_navigation", "util"],
+  function (SpatialNavigation, util) {
 
-  /**
-   * Handles directional key presses for TV remote navigation.
-   * @param {KeyboardEvent} ev - The keyboard event object from keydown/keyup.
-   * @returns {void}
-   */
-  function handleNavKey(ev) {
-    switch (ev.key) {
-      case "ArrowUp":
-        if (focusItemNumber === 0)
-          // handle up from 0
-          console.warn("up from first");
-        else focusItemNumber--;
-        console.log("up");
-        break;
-      case "ArrowDown":
-        if (focusItemNumber === navLinks.length - 1)
-          // handle down from last link
-          console.warn("down from last");
-        else focusItemNumber++;
-        console.log("down");
-        break;
-      case "Enter":
-        console.log("enter");
-        break;
-      default:
-        console.log(ev);
-        logThis(ev);
-        break;
-    }
-    setFocusX(focusItemNumber);
-  }
-
-  /**
-   * @param {HTMLAnchorElement} clickedLink
-   */
-  function handleSelect(clickedLink) {
-    // 1. Read the target ID string (e.g., "panel-settings")
-    const targetId = clickedLink.dataset.target;
-
-    if (targetId) {
-      const targetPanel = document.getElementById(targetId);
-
-      // 3. Show the panel
-      targetPanel.classList.remove("hidden");
-    }
-  }
-  /**
-   * Switches the active panel on the right side and focuses its first element.
-   * @param {HTMLAnchorElement} activeLink - The currently focused menu link.
-   */
-  function openTargetPanel(activeLink) {
-    const targetId = activeLink.getAttribute("data-target");
-    if (!targetId) return;
-
-    // 1. Hide all panels
-    /** @type {NodeListOf<HTMLElement>} */
-    const panels = document.querySelectorAll(".view-panel");
-    panels.forEach(function (panel) {
-      panel.classList.add("hidden");
-      panel.classList.remove("active");
-    });
-
-    // 2. Show the target panel
-    const targetPanel = document.getElementById(targetId);
-    if (!targetPanel) return;
-
-    targetPanel.classList.remove("hidden");
-    targetPanel.classList.add("active");
-
-    // 3. Hand off focus to the first focusable element inside the target panel
+    // #region variables
     /** @type {HTMLElement | null} */
-    const firstFocusable = targetPanel.querySelector(
-      "input, button, a, [tabindex]"
-    );
-    if (firstFocusable) firstFocusable.focus();
-  }
+    const sidemenu = document.getElementById("sidemenu");
+    /** @type {NodeListOf<HTMLAnchorElement>} */
+    const navLinks = document.querySelectorAll("#sidemenu a");
+    /** @type {NodeListOf<HTMLElement>} */
+    const viewPanels = document.querySelectorAll("#panels .view-panel");
+    // #endregion
 
-  // document.addEventListener("keydown", function (ev) {
-  //     // Tizen Return / Back key codes
-  //     if (ev.key === "GoBack" || ev.key === "Back" || ev.keyCode === 10009) {
-  //         ev.preventDefault();
+    /**
+      * @param {HTMLElement} panel
+      */
+    function onPageShow(panel) {
+    };
+    /**
+     * @param {HTMLElement} panel
+     */
+    function onPageHide(panel) {
+    };
+    /**
+     * @param {HTMLElement} targetPanel
+     */
+    function navigateTo(targetPanel) {
+      if (!targetPanel) return;
+      viewPanels.forEach(function (panel) {
+        if (panel === targetPanel) {
+          if (!panel.classList.contains('active')) {
+            panel.classList.add('active');
+            onPageShow(targetPanel);
+          }
+        } else {
+          if (panel.classList.contains('active')) {
+            panel.classList.remove('active');
+            onPageHide(panel);
+          }
+        }
+      });
 
-  //         // Return focus to the left side menu
-  //         setFocus(focusItemNo);
-  //     }
-  // });
+      // Update active state on navigation buttons if present
+      navLinks.forEach(function (link) {
+        if (link.getAttribute('data-target') === targetPanel.id) {
+          link.classList.add('active');
+        } else {
+          link.classList.remove('active');
+        }
+      });
+    }
 
-  // /** @type {HTMLElement | null} */
-  // const nav = document.getElementById("sidemenu");
-  // if (nav) {
-  //     nav.addEventListener("keydown", handleNavKey);
-  // } else {
-  //     console.error("No nav found");
-  // }
+    // Common navigation trigger executor
+    /**
+     * @param {HTMLElement} element
+     */
+    function handleTrigger(element) {
+      // 1. Read the target ID string (e.g., "data-target")
+      const el = element.closest('[data-target]');
+      if (el) {
+        const targetId = el.dataset.target;
+        const targetPanel = document.getElementById(targetId);
+        if (targetPanel)
+          navigateTo(targetPanel);
+        else
+          console.error("targetPanel not found");
+      } else
+        console.error("no data-target")
+    }
 
-  SpatialNavigation.init();
-  // Define navigable elements (anchors and elements with "focusable" class).
-  SpatialNavigation.add({
-    selector: "a, .focusable"
+    function setupSpatialNav() {
+      SpatialNavigation.init();
+      // Define navigable elements (anchors and elements with "focusable" class).
+      SpatialNavigation.add({
+        selector: "a, .focusable"
+      });
+
+      // Make the *currently existing* navigable elements focusable.
+      SpatialNavigation.makeFocusable();
+
+      // Focus the first navigable element.
+      SpatialNavigation.focus();
+    }
+
+    // #region Event handlers
+    /**
+    * Handles directional key presses for TV remote navigation.
+    * @param {PointerEvent} event - The keyboard event object from keydown/keyup.
+    * @returns {void}
+    */
+    function onClick(event) {
+      handleTrigger(event.target);
+    }
+    /**
+    * Handles directional key presses for TV remote navigation.
+    * @param {KeyboardEvent} event - The keyboard event object from keydown/keyup.
+    * @returns {void}
+    */
+    function onKeyDown(event) {
+      const keyCode = event.keyCode;
+      const keyName = event.key;
+
+      // Standard Enter (13) or Tizen/SmartTV OK key (29443 or 13)
+      const isEnterKey = keyCode === 13 || keyCode === 29443 || keyName === 'Enter';
+
+      if (isEnterKey) {
+        const activeElement = document.activeElement;
+        if (activeElement && activeElement !== document.body) {
+          handleTrigger(activeElement);
+          event.preventDefault(); // Prevents the browser from firing the subsequent 'click' event
+        }
+      }
+    }
+
+    function initEventHandlers() {
+      if (sidemenu) {
+        // 1. Mouse / Touch click handler
+        sidemenu.addEventListener('click', onClick);
+        // 2. D-Pad / Remote Control Key handler
+        sidemenu.addEventListener('keydown', onKeyDown)
+      }
+      else console.error("Sidemenu not found")
+    }
+    // #endregion
+
+    setupSpatialNav();
+    initEventHandlers();
   });
 
-  // Make the *currently existing* navigable elements focusable.
-  SpatialNavigation.makeFocusable();
+// document.addEventListener("keydown", function (ev) {
+//     // Tizen Return / Back key codes
+//     if (ev.key === "GoBack" || ev.key === "Back" || ev.keyCode === 10009) {
+//         ev.preventDefault();
 
-  // Focus the first navigable element.
-  SpatialNavigation.focus();
-
-  // /** @type {NodeListOf<HTMLAnchorElement>} */
-  // const navLinks = document.querySelectorAll("#sidemenu a");
-
-  // let focusItemNumber = 0;
-  // setFocusX(focusItemNumber);
-});
+//         // Return focus to the left side menu
+//         setFocus(focusItemNo);
+//     }
+// });

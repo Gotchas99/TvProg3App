@@ -15,7 +15,8 @@ requirejs.config({
     "3rd_party/spatial_navigation": {
       exports: "SpatialNavigation"
     }
-  }
+  },
+  urlArgs: "bust=" + (new Date()).getTime()
 });
 
 // require(["3rd_party/domReady"], function (domReady) {
@@ -26,7 +27,41 @@ requirejs.config({
 //   });
 // });
 
+// eslint-disable-next-line no-unused-vars
+function suppress_extension_notifications() {
+  var ffMatch = navigator.userAgent.match(/Firefox\/(\d+)/);
+  var ffVersion = ffMatch ? parseInt(ffMatch[1], 10) : 999;
+  if (ffVersion === 999) return;
+  // Suppress specific extension & browser feature policy noise in local dev
+  if (
+    location.hostname === "localhost" ||
+    location.hostname === "127.0.0.1"
+  ) {
+    const origWarn = console.warn;
+    const origError = console.error;
+
+    console.warn = function (...args) {
+      if (
+        typeof args[0] === "string" &&
+        args[0].includes("Feature Policy: Skipping unsupported feature")
+      )
+        return;
+      origWarn.apply(console, args);
+    };
+
+    console.error = function (...args) {
+      if (
+        typeof args[0] === "string" &&
+        args[0].includes("webclient-infield")
+      )
+        return;
+      origError.apply(console, args);
+    };
+  }
+}
+// suppress_extension_notifications();
+
 // Start the main app logic.
-requirejs(["app"], function (_app) {});
+requirejs(["app"], function (_app) { });
 
 console.log("main loaded");
