@@ -22,9 +22,8 @@ window.addEventListener("keydown", function (e) {
   switch (e.keyCode) {
     case 10009: // Tizen Return / Back key
       console.log("Back key pressed");
-      if (confirm("Exit application?")) {
+      if (confirm("Exit application?"))
         tizen.application.getCurrentApplication().exit();
-      }
       break;
   }
 });

@@ -29,8 +29,8 @@ requirejs.config({
 
 // eslint-disable-next-line no-unused-vars
 function suppress_extension_notifications() {
-  var ffMatch = navigator.userAgent.match(/Firefox\/(\d+)/);
-  var ffVersion = ffMatch ? parseInt(ffMatch[1], 10) : 999;
+  const ffMatch = navigator.userAgent.match(/Firefox\/(\d+)/);
+  const ffVersion = ffMatch ? parseInt(ffMatch[1], 10) : 999;
   if (ffVersion === 999) return;
   // Suppress specific extension & browser feature policy noise in local dev
   if (

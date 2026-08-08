@@ -1,6 +1,6 @@
 // console.log("style.js loading");
 
-function loadStyle(href) {
+function _loadStyle(href) {
     return new Promise((resolve, reject) => {
         // Check if stylesheet is already present
         if (document.querySelector(`link[href="${href}"]`)) {

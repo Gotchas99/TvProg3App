@@ -78,3 +78,55 @@ body {
   display: block;
   /* Use display: flex or grid if required by your layout */
 }
+
+/* channel cards *************************'' */
+#channel-grid {
+  display: flex;
+  gap: 16px;
+  padding: 20px;
+}
+
+.channel-card {
+  width: 220px;
+  background: #2a2a2a;
+  color: #ffffff;
+  border-radius: 8px;
+  padding: 16px;
+  border: 2px solid transparent;
+  outline: none;
+  cursor: pointer;
+}
+
+/* TV Focus State */
+.channel-card:focus {
+  border-color: #00d2ff;
+  transform: scale(1.05);
+  box-shadow: 0 0 15px rgba(0, 210, 255, 0.5);
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-bottom: 1px solid #444;
+  padding-bottom: 8px;
+}
+
+.card-number {
+  background: #00d2ff;
+  color: #000;
+  font-weight: bold;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.card-title {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.card-description {
+  color: #bbb;
+  font-size: 0.85rem;
+  margin-top: 8px;
+}

@@ -76,6 +76,17 @@
         <button id="btn-save">Save</button>
       </section>
       <section id="panel-showlist" class="view-panel ">
+        <template id="channel-card-template">
+          <div class="card">
+            <img src="" alt="" class="card-logo" />
+            <h3 class="card-title"></h3>
+            <span class="card-number"></span>
+          </div>
+        </template>
+
+        <!-- Container where items will be dynamically injected -->
+        <div id="channel-list"></div>
+
         <h2>Showlist</h2>
         <input type="text" id="setting-name" placeholder="Name" />
         <button id="btn-save">Save</button>

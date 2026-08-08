@@ -57,6 +57,7 @@
         }
     ],
     "ignorePatterns": [
+        "chrome-linux",
         "3rd_party",
         "spatial_navigation.js",
         "require.js"

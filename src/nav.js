@@ -31,21 +31,20 @@ define(["3rd_party/spatial_navigation", "util"],
             panel.classList.add('active');
             onPageShow(targetPanel);
           }
-        } else {
+        } else
           if (panel.classList.contains('active')) {
             panel.classList.remove('active');
             onPageHide(panel);
+
           }
-        }
       });
 
       // Update active state on navigation buttons if present
       navLinks.forEach(function (link) {
-        if (link.getAttribute('data-target') === targetPanel.id) {
+        if (link.getAttribute('data-target') === targetPanel.id)
           link.classList.add('active');
-        } else {
+        else
           link.classList.remove('active');
-        }
       });
     }
 
@@ -63,9 +62,10 @@ define(["3rd_party/spatial_navigation", "util"],
           navigateTo(targetPanel);
         else
           console.error("targetPanel not found");
-      } else
-        console.error("no data-target")
-    }
+      }
+      else
+        console.error("no data-target");
+    };
 
     function setupSpatialNav() {
       SpatialNavigation.init();
@@ -79,7 +79,7 @@ define(["3rd_party/spatial_navigation", "util"],
 
       // Focus the first navigable element.
       SpatialNavigation.focus();
-    }
+    };
 
     // #region Event handlers
     /**
@@ -116,10 +116,11 @@ define(["3rd_party/spatial_navigation", "util"],
         // 1. Mouse / Touch click handler
         sidemenu.addEventListener('click', onClick);
         // 2. D-Pad / Remote Control Key handler
-        sidemenu.addEventListener('keydown', onKeyDown)
+        sidemenu.addEventListener('keydown', onKeyDown);
       }
-      else console.error("Sidemenu not found")
-    }
+      else
+        console.error("Sidemenu not found");
+    };
     // #endregion
 
     setupSpatialNav();
