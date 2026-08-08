@@ -14,6 +14,7 @@ public/Debug
 Debug
 
 *.local
+#ta inte med denna. den är för stor
 chrome-linux
 
 # Editor directories and files
