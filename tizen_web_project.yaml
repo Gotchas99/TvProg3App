@@ -51,7 +51,7 @@ excludes:
   - README.md
   - package*
   - tz.cmd
-  - vite.config.js
+  - vite.config.mjs
 
 # project dependencies
 deps: []

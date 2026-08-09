@@ -33,7 +33,7 @@ body {
 }
 
 /* Main Content Area (Fills remaining horizontal space) */
-.content {
+.panels {
   -webkit-box-flex: 1;
   -webkit-flex: 1;
   flex: 1;
@@ -62,21 +62,18 @@ body {
 }
 
 /* Show outline only when navigating via keyboard / TV remote D-pad */
-:focus-visible {
+/* :focus-visible {
   outline: 3px solid #ff0000;
-}
+} */
 
 /* Hide all pages by default */
 .view-panel {
   display: none;
-  /* width: 100%;
-  height: 100%; */
 }
 
 /* Active page display state */
 .view-panel.active {
   display: block;
-  /* Use display: flex or grid if required by your layout */
 }
 
 /* channel cards *************************'' */

@@ -2,6 +2,34 @@
 window.tizen = window.tizen || {};
 const tizen = window.tizen;
 
+function registerTizenKeys() {
+  const keysToRegister = [
+    "MediaPlay",
+    "MediaPause",
+    "MediaStop",
+    "MediaFastForward",
+    "MediaRewind",
+    "0",
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9"
+  ];
+
+  keysToRegister.forEach(function (keyName) {
+    try {
+      tizen.tvinputdevice.registerKey(keyName);
+    } catch (err) {
+      console.warn("Failed to register Tizen key:", keyName, err);
+    }
+  });
+}
+
 // Register Tizen TV Remote Keys on app load
 function initTizenKeys() {
   if (typeof tizen === "undefined" || tizen.tvinputdevice) {
@@ -9,10 +37,7 @@ function initTizenKeys() {
     return;
   }
   try {
-    // Register the Return/Back key so the app receives it
-    tizen.tvinputdevice.registerKey("Return");
-    tizen.tvinputdevice.registerKey("MediaPlay");
-    tizen.tvinputdevice.registerKey("MediaPause");
+    registerTizenKeys();
   } catch (e) {
     console.warn("Failed to register Tizen input keys:", e);
   }

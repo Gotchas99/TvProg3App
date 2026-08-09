@@ -34,11 +34,12 @@
             "url": "http://localhost:5173",
             "webRoot": "${workspaceFolder}",
             "userDataDir": true,
-            "preLaunchTask": "Start Vite Server",
+            // "preLaunchTask": "Start Vite Server",
             "runtimeArgs": [
-                "--hide-crash-restore-bubble",
-                "--no-first-run",
-                "--no-default-browser-check"
+                // "--app=http://localhost:5173", /* Opens in app/standalone mode without URL bar */
+                //     "--hide-crash-restore-bubble",
+                //     "--no-first-run",
+                //     "--no-default-browser-check"
             ]
         },
         {

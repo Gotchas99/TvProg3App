@@ -1,16 +1,11 @@
-console.log("app loading");
+// console.log("app loading");
 
-define(["util", "nav"], function (_util, _nav) {
-  function initApp() {
-    // const scripts = ["util", "style", "focus", "nav", "tizen"];
-    // scripts.forEach(fname => {
-    //   loadScript("src/" + fname + ".js");
-    // });
-  }
+define(["nav"], function (_nav) {
+  function initApp() {}
 
   /**
- * @param {String} src - Text to log.
- */
+   * @param {String} src - Text to log.
+   */
   // eslint-disable-next-line no-unused-vars
   async function loadScript(src) {
     return new Promise((resolve, reject) => {
@@ -39,4 +34,4 @@ define(["util", "nav"], function (_util, _nav) {
 
   initApp();
 });
-console.log("app loaded");
+// console.log("app loaded");
