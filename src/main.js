@@ -1,4 +1,4 @@
-console.log("main loading");
+// console.log("main loading");
 
 requirejs.config({
   //By default load any module IDs from js/lib
@@ -16,16 +16,8 @@ requirejs.config({
       exports: "SpatialNavigation"
     }
   },
-  urlArgs: "bust=" + (new Date()).getTime()
+  urlArgs: "bust=" + new Date().getTime()
 });
-
-// require(["3rd_party/domReady"], function (domReady) {
-//   domReady(function () {
-//     //This function is called once the DOM is ready.
-//     //It will be safe to query the DOM and manipulate
-//     //DOM nodes in this function.
-//   });
-// });
 
 // eslint-disable-next-line no-unused-vars
 function suppress_extension_notifications() {
@@ -33,10 +25,7 @@ function suppress_extension_notifications() {
   const ffVersion = ffMatch ? parseInt(ffMatch[1], 10) : 999;
   if (ffVersion === 999) return;
   // Suppress specific extension & browser feature policy noise in local dev
-  if (
-    location.hostname === "localhost" ||
-    location.hostname === "127.0.0.1"
-  ) {
+  if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
     const origWarn = console.warn;
     const origError = console.error;
 
@@ -50,10 +39,7 @@ function suppress_extension_notifications() {
     };
 
     console.error = function (...args) {
-      if (
-        typeof args[0] === "string" &&
-        args[0].includes("webclient-infield")
-      )
+      if (typeof args[0] === "string" && args[0].includes("webclient-infield"))
         return;
       origError.apply(console, args);
     };
@@ -62,6 +48,14 @@ function suppress_extension_notifications() {
 // suppress_extension_notifications();
 
 // Start the main app logic.
-requirejs(["app"], function (_app) { });
+requirejs(["app", "polyfill"], function (_app, _polyfill) {
+  // Detect Smart TV platforms (Tizen, webOS, Android TV, etc.)
+  const isTV = /Tizen|Web0S|SmartTV|Maple|Appletv|CrKey|Vizio/i.test(
+    navigator.userAgent
+  );
 
-console.log("main loaded");
+  // If NOT a TV, add .is-pc to the <body> element
+  if (!isTV) document.body.classList.add("is-pc");
+});
+
+// console.log("main loaded");

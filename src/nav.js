@@ -2,8 +2,9 @@ define([
   "3rd_party/spatial_navigation",
   "panels/default",
   "panels/showlist",
+  "panels/blacklist",
   "panels/settings"
-], function (SpatialNavigation, defaultPanel, showlist, settings) {
+], function (SpatialNavigation, defaultPanel, showlist, blacklist, settings) {
   // #region variables
   /** @type {HTMLElement | null} */
   const sidemenu = document.getElementById("sidemenu");
@@ -26,8 +27,10 @@ define([
     const p = panelMap[panel.id];
     if (p) p.show();
     else console.error("PanelMap not found", panel.id);
-    // Focus the default element of the 'main-content' section
-    SpatialNavigation.focus("main-content");
+    // Make the *currently existing* navigable elements focusable.
+    SpatialNavigation.makeFocusable("panels");
+    // Focus the default element of the 'panels' section
+    // SpatialNavigation.focus("panels");
   }
   /**
    * @param {HTMLElement} panel
@@ -87,10 +90,6 @@ define([
       return;
     }
     SpatialNavigation.init();
-    // Define navigable elements (anchors and elements with "focusable" class).
-    SpatialNavigation.add({
-      selector: "a, .focusable"
-    });
 
     // 1. Define the Sidebar section
     SpatialNavigation.add("sidemenu", {
@@ -98,21 +97,36 @@ define([
       defaultElement: "#sidemenu .default-item", // Optional: item focused when section opens
       enterTo: "last-focused", // Remembers the last focused item when returning
       leaveFor: {
-        right: "@panels" // Pressing RIGHT explicitly targets the 'main-content' section
+        right: "@panels", // Pressing RIGHT explicitly targets the 'panels' section
+        down: "@logSection"
       }
     });
 
     // 2. Define the Main Content section
     SpatialNavigation.add("panels", {
-      selector: "#panels .focusable",
+      selector:
+        "#panels .view-panel.active a, " +
+        "#panels .view-panel.active button, " +
+        "#panels .view-panel.active input, " +
+        "#panels .view-panel.active textarea, " +
+        "#panels .view-panel.active select, " +
+        "#panels .view-panel.active .focusable, " +
+        "#panels .view-panel.active [tabindex='0']",
       enterTo: "default-element",
       leaveFor: {
-        left: "@sidemenu" // Pressing LEFT explicitly targets the 'sidebar' section
+        left: "@sidemenu" // Pressing LEFT explicitly targets the 'sidemenu' section
       }
     });
 
-    // Make the *currently existing* navigable elements focusable.
-    SpatialNavigation.makeFocusable();
+    // 3. Define the Log section
+    SpatialNavigation.add("logSection", {
+      selector: "#log",
+      defaultElement: "#log", // Optional: item focused when section opens
+      // enterTo: "last-focused", // Remembers the last focused item when returning
+      leaveFor: {
+        up: "@sidemenu"
+      }
+    });
 
     // #region sn events
     // All valid events.
@@ -135,9 +149,9 @@ define([
       window.addEventListener(type, eventHandler);
     });
     // #endregion
-
-    // Focus the first navigable element.
-    SpatialNavigation.focus();
+    SpatialNavigation.makeFocusable();
+    // Initial focus targets section ID "sidemenu"
+    SpatialNavigation.focus("sidemenu");
   }
 
   // #region Event handlers

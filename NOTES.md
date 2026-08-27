@@ -16,8 +16,11 @@ Here is the system layout:
 
 ```mermaid
 graph TD;
-    A[Client] -->|HTTP Request| B(Gateway)
-    B --> C{Auth Service}
-    C -->|Valid| D[Database]
-    C -->|Invalid| E[401 Error]
+    A[Page] -->|Start up| B[Nav]
+    A --> C[Panels]
+    B --> |selects panel|C
+    C --> D[Showlist]
+    D --> E[Repo] --> F[Show repo]
+    D --> G[Show grid] --> H[Show card]
+
 ```

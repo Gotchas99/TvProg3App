@@ -9,7 +9,8 @@
     "build vite and tz": "vite build && tz build",
     "preview": "vite preview",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build/pack tz": "rm -fr Debug/projects/TvProg3App/* && tz pack",
+    "build/pack/install tz": "rm -fr Debug/projects/TvProg3App/* && tz pack && sdb connect 10.0.0.215 && tz install -p Debug/TvProg3App.wgt ",
+    "uninstall tz": "tz uninstall -p A123456789.TvProg3App -t QE65Q9FNA ",
     "clean tz": "tz clean",
     "clean rm": "rm -r Debug/*"
   },

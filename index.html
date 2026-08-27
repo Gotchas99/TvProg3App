@@ -2,10 +2,19 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <!-- Force Tizen's Web Engine to not cache index.html -->
+    <meta
+      http-equiv="Cache-Control"
+      content="no-cache, no-store, must-revalidate"
+    />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
     <title>TvProg3App</title>
     <link rel="icon" type="image/png" href="icon.png" />
     <link rel="stylesheet" type="text/css" href="css/style.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- MUST be included FIRST before any application JS executes -->
+    <script type="text/javascript" src="$WEBAPIS/webapis/webapis.js"></script>
     <script data-main="src/main" src="src/3rd_party/require.js"></script>
     <!-- Version/Feature Guard for Chrome 56 / Tizen 4 Dev Reloading -->
     <script>
@@ -48,12 +57,36 @@
     <div class="layout">
       <nav id="sidemenu" class="sidemenu">
         <h2>Navigation</h2>
+        <h3>v2</h3>
         <ul>
-          <li><a href="#" data-target="panel-showlist">Show list</a></li>
-          <li><a href="#" data-target="panel-blacklist">Blacklist</a></li>
-          <li><a href="#" data-target="panel-want">Want to see</a></li>
-          <li><a href="#" data-target="panel-what">What to see</a></li>
-          <li><a href="#" data-target="panel-settings">Settings</a></li>
+          <li>
+            <a
+              href="#"
+              data-target="panel-showlist"
+              class="focusable default-item"
+              >Show list</a
+            >
+          </li>
+          <li>
+            <a href="#" data-target="panel-blacklist" class="focusable"
+              >Blacklist</a
+            >
+          </li>
+          <li>
+            <a href="#" data-target="panel-want" class="focusable"
+              >Want to see</a
+            >
+          </li>
+          <li>
+            <a href="#" data-target="panel-what" class="focusable"
+              >What to see</a
+            >
+          </li>
+          <li>
+            <a href="#" data-target="panel-settings" class="focusable"
+              >Settings</a
+            >
+          </li>
         </ul>
       </nav>
 
@@ -69,37 +102,30 @@
         </section>
 
         <section id="panel-showlist" class="view-panel">
-          <template id="channel-card-template">
-            <div class="card">
-              <img src="" alt="" class="card-logo" />
-              <h3 class="card-title"></h3>
-              <span class="card-number"></span>
-            </div>
-          </template>
-
-          <!-- Container where items will be dynamically injected -->
-          <div id="channel-list"></div>
-
           <h2>Showlist</h2>
-          <input type="text" id="setting-name" placeholder="Name" />
-          <button id="btn-save">Save</button>
+          <button id="btn-refresh">Refresh list</button>
+          <input type="text" id="this" placeholder="this" />
+          <!-- <input type="text" id="that" placeholder="that" />
+          <input type="text" id="other" placeholder="other" /> -->
+          <!-- Container where items will be dynamically injected -->
+          <div id="program-grid"></div>
         </section>
 
         <section id="panel-blacklist" class="view-panel">
           <h2>Blacklist</h2>
-          <input type="text" id="setting-name" placeholder="Name" />
+          <input type="text" id="blacklist" placeholder="blacklist" />
           <button id="btn-save">Save</button>
         </section>
 
         <section id="panel-want" class="view-panel">
           <h2>Want to see</h2>
-          <input type="text" id="setting-name" placeholder="Name" />
+          <input type="text" id="want" placeholder="want" />
           <button id="btn-save">Save</button>
         </section>
 
         <section id="panel-what" class="view-panel">
           <h2>What to see next</h2>
-          <input type="text" id="setting-name" placeholder="Name" />
+          <input type="text" id="what" placeholder="what" />
           <button id="btn-save">Save</button>
         </section>
 
@@ -109,9 +135,25 @@
           <button id="btn-save">Save</button>
         </section>
         <hr />
-        <textarea name="log" id="log" rows="5" cols="80"></textarea>
+        <textarea
+          name="log"
+          id="log"
+          class="focusable"
+          rows="30"
+          cols="80"
+        ></textarea>
       </main>
     </div>
     <div id="app"></div>
+    <template id="program-card-template">
+      <div class="program-card focusable">
+        <img src="" alt="" class="card-poster" />
+        <h3 class="card-name"></h3>
+        <div class="card-tagline"></div>
+        <span class="card-vote_average"></span>
+        <span class="card-title_type"></span>
+        <span class="card-status"></span>
+      </div>
+    </template>
   </body>
 </html>

@@ -1,51 +1,80 @@
-define(["3rd_party/spatial_navigation", "repo/repo", "util"], function (
+define(["3rd_party/spatial_navigation", "repo/repo"], function (
   SpatialNavigation,
-  repo,
-  util
+  repo
 ) {
-  // console.log("showlist loading");
+  console.log("showlist loading");
   // Sample Data
-  let shows = [];
+  const channels = [
+    {
+      id: 101,
+      number: "01",
+      title: "HBO HD",
+      description: "Live Sports & Premier Movies"
+    },
+    {
+      id: 102,
+      number: "02",
+      title: "Discovery",
+      description: "Documentaries & Nature"
+    },
+    {
+      id: 103,
+      number: "03",
+      title: "CNN",
+      description: "24/7 Global News Coverage"
+    },
+    {
+      id: 104,
+      number: "04",
+      title: "Eurosport",
+      description: "Live Football & Tennis"
+    },
+    {
+      id: 105,
+      number: "05",
+      title: "HBO HD",
+      description: "Live Sports & Premier Movies"
+    },
+    {
+      id: 106,
+      number: "06",
+      title: "Discovery",
+      description: "Documentaries & Nature"
+    },
+    {
+      id: 107,
+      number: "07",
+      title: "CNN",
+      description: "24/7 Global News Coverage"
+    }
+  ];
 
   // --- 1. Template Factory Function ---
-  function createProgramCard(data) {
+  function createChannelCard(data) {
     const template = document.getElementById("program-card-template");
-
     const clone = document.importNode(template.content, true);
-    if (!clone) util.logThis("clone failed");
 
     const card = clone.querySelector(".program-card");
-    const posterEl = clone.querySelector(".card-poster");
-    const nameEl = clone.querySelector(".card-name");
-    const taglineEl = clone.querySelector(".card-tagline");
-    const vote_averageEl = clone.querySelector(".card-vote_average");
-    const title_typeEl = clone.querySelector(".card-title_type");
-    const statusEl = clone.querySelector(".card-status");
+    const numberEl = clone.querySelector(".card-number");
+    const titleEl = clone.querySelector(".card-title");
+    const descEl = clone.querySelector(".card-description");
 
     card.setAttribute("data-id", data.id);
     card.setAttribute("data-target", "channel-player"); // For route/action tracking
-    posterEl.src = data.poster_thumbnail;
-    nameEl.textContent = data.name;
-    taglineEl.textContent = data.tagline;
-    vote_averageEl.textContent = data.vote_average;
-    title_typeEl.textContent = data.title_type;
-    statusEl.textContent = data.status;
+    numberEl.textContent = data.number;
+    titleEl.textContent = data.title;
+    descEl.textContent = data.description;
 
     return clone;
   }
 
   // --- 2. Render Grid ---
-  function renderProgramGrid(items) {
+  function renderChannelGrid(items) {
     const container = document.getElementById("program-grid");
-    if (!container) {
-      console.error("container not found");
-      util.logThis("container not found");
-      return;
-    }
     const fragment = document.createDocumentFragment();
 
     items.forEach(function (item) {
-      fragment.appendChild(createProgramCard(item));
+      fragment.appendChild(createChannelCard(item));
     });
 
     container.replaceChildren(fragment);
@@ -68,26 +97,28 @@ define(["3rd_party/spatial_navigation", "repo/repo", "util"], function (
   // --- 4. Event Delegation Handler ---
   function handleChannelSelect(targetCard) {
     const channelId = targetCard.getAttribute("data-id");
-    const name = targetCard.querySelector(".card-name").textContent;
+    const channelTitle = targetCard.querySelector(".card-title").textContent;
 
-    console.log("Action triggered on: ", name);
-    util.logThis("Action triggered on: " + name);
+    console.log(
+      "Action triggered on Channel ID:",
+      channelId,
+      "Title:",
+      channelTitle
+    );
 
     // Example UI response: visual active feedback
     const currentActive = document.querySelector(".program-card.active");
-    if (currentActive) currentActive.classList.remove("active");
+    if (currentActive) {
+      currentActive.classList.remove("active");
+    }
     targetCard.classList.add("active");
   }
 
   // --- 5. Event Delegation Listeners ---
   function initEventDelegation() {
     const gridContainer = document.getElementById("program-grid");
-    if (!gridContainer) return;
 
     // A. Click Event Listener (Handles Mouse / Remote Pointer)
-    /**
-     * @param {!Event} event - The '!' means this parameter cannot be null
-     */
     gridContainer.addEventListener("click", function (event) {
       const card = event.target.closest(".program-card");
       if (card) handleChannelSelect(card);
@@ -107,50 +138,18 @@ define(["3rd_party/spatial_navigation", "repo/repo", "util"], function (
         if (card) handleChannelSelect(card);
       }
     });
-
-    const refresh = document.getElementById("btn-refresh");
-    if (!refresh) return;
-
-    refresh.addEventListener("click", function (evt) {
-      util.logThis("refresh button clicked");
-      const showlistrepo = repo.show_repo;
-      shows = showlistrepo.getShows();
-      renderProgramGrid(shows);
-    });
-    refresh.addEventListener("keydown", function (e) {
-      util.logThis("refresh button something: " + e.keyCode + " - " + e.key);
-      switch (e.keyCode) {
-        case 13: // Tizen Enter key
-          util.logThis("refresh button press enter");
-          const showlistrepo = repo.show_repo;
-          shows = showlistrepo.getShows();
-          renderProgramGrid(shows);
-          break;
-      }
-    });
-  }
-  function removeEventDelegation() {
-    const gridContainer = document.getElementById("program-grid");
-    if (!gridContainer) return;
-
-    // gridContainer.removeEventListener("click",
   }
 
-  function init() {
-    const showlistrepo = repo.show_repo;
-    shows = showlistrepo.getShows();
+  function init() {}
+  function show() {
+    renderChannelGrid(channels);
+    initEventDelegation();
     initSpatialNavigation();
   }
-  function show() {
-    renderProgramGrid(shows);
-    initEventDelegation();
-  }
-  function hide() {
-    removeEventDelegation();
-  }
+  function hide() {}
   function finalize() {}
   init();
-  // console.log("showlist loaded");
+  console.log("showlist loaded");
   return {
     init: init,
     show: show,

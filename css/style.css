@@ -14,6 +14,14 @@ body {
   color: #ffffff;
 }
 
+/* PC Environment: Responsive & Scrolling */
+body.is-pc {
+  width: 100vw;
+  height: 100vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
 /* Container Layout (Flexbox for Chrome 56 & Tizen 4) ***************************/
 .layout {
   display: -webkit-box;
@@ -77,25 +85,28 @@ body {
 }
 
 /* channel cards *************************'' */
-#channel-grid {
+#program-grid {
   display: flex;
-  gap: 16px;
+  flex-wrap: wrap;    /* Enables multi-line wrapping */
+    gap: 16px;
   padding: 20px;
 }
 
-.channel-card {
-  width: 220px;
-  background: #2a2a2a;
+.program-card {
+  /* width: 220px; */
+  /* Put #2 here (replaces width: 220px) */
+    flex: 0 0 220px;background: #2a2a2a;
   color: #ffffff;
   border-radius: 8px;
   padding: 16px;
   border: 2px solid transparent;
   outline: none;
+  box-sizing: border-box;
   cursor: pointer;
 }
 
 /* TV Focus State */
-.channel-card:focus {
+.program-card:focus {
   border-color: #00d2ff;
   transform: scale(1.05);
   box-shadow: 0 0 15px rgba(0, 210, 255, 0.5);
@@ -109,7 +120,7 @@ body {
   padding-bottom: 8px;
 }
 
-.card-number {
+.card-vote_average {
   background: #00d2ff;
   color: #000;
   font-weight: bold;
@@ -117,12 +128,12 @@ body {
   border-radius: 4px;
 }
 
-.card-title {
+.card-name {
   margin: 0;
   font-size: 1.1rem;
 }
 
-.card-description {
+.card-tagline {
   color: #bbb;
   font-size: 0.85rem;
   margin-top: 8px;

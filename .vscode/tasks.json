@@ -47,7 +47,7 @@
       "type": "shell",
       "command": "ollama run qwen2.5-coder:0.5b ''",
       "runOptions": {
-        "runOn": "folderOpen"
+        "runOn_X": "folderOpen"
       },
       "presentation": {
         "reveal": "silent",

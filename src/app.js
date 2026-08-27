@@ -1,6 +1,6 @@
 // console.log("app loading");
 
-define(["nav"], function (_nav) {
+define(["tizen", "nav"], function (_tizen, _nav) {
   function initApp() {}
 
   /**
