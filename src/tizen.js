@@ -106,7 +106,8 @@ define(["util"], function (util) {
       );
     })()
   };
-
+  // console.log("Tizen 4 Feature Capabilities:", Tizen4Features);
+  util.logThis(JSON.stringify(Tizen4Features));
   // Test ES6 Async/Await syntax support safely
   try {
     eval("async function _test() {}");
@@ -156,9 +157,6 @@ define(["util"], function (util) {
       );
     }
   }
-
-  // console.log("Tizen 4 Feature Capabilities: " + Tizen4Features);
-  console.log("Tizen 4 Feature Capabilities:", Tizen4Features);
 
   initTizenKeys();
 });

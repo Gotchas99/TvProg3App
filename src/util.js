@@ -1,4 +1,4 @@
-console.log("util loading");
+// console.log("util loading");
 
 define([], function () {
   const MAX_LOG_LINES = 100;
@@ -8,7 +8,7 @@ define([], function () {
     return;
   }
   const logEl = el;
-  logEl.value = "------\nAppLog";
+  // logEl.value = "------\nAppLog";
 
   /**
    * @param {String} txt - Text to log.
@@ -128,4 +128,4 @@ define([], function () {
   };
 });
 
-console.log("util loaded");
+// console.log("util loaded");

@@ -2,7 +2,7 @@ define(["3rd_party/spatial_navigation", "repo/repo"], function (
   SpatialNavigation,
   repo
 ) {
-  console.log("showlist loading");
+  // console.log("blacklist loading");
   // Sample Data
   const channels = [
     {
@@ -149,7 +149,7 @@ define(["3rd_party/spatial_navigation", "repo/repo"], function (
   function hide() {}
   function finalize() {}
   init();
-  console.log("showlist loaded");
+  // console.log("blacklist loaded");
   return {
     init: init,
     show: show,

@@ -1,12 +1,12 @@
 define([], function () {
-  console.log("default loading");
+  // console.log("default loading");
 
   function init() {}
   function show() {}
   function hide() {}
   function finalize() {}
   init();
-  console.log("default loaded");
+  // console.log("default loaded");
   return {
     init: init,
     show: show,

@@ -23,6 +23,32 @@
       }
     },
     {
+      "type": "shell",
+      "label": "Start Tizen Chrome 79",
+      "command": "HOST_IP=$(ip route show default | awk '{print $3}') && docker run --rm -it --net=host --ipc=host --user root -e DISPLAY=:0 -v /mnt/wslg/.X11-unix:/tmp/.X11-unix:ro -v /mnt/wslg:/mnt/wslg chrome79 --no-sandbox http://${HOST_IP}:5173",
+      "options": {
+        "shell": {
+          "executable": "wsl.exe",
+          "args": [
+            "-d",
+            "Ubuntu",
+            "bash",
+            "-l",
+            "-c"
+          ]
+        }
+      },
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      }
+    },
+    {
       "label": "Set X11 Permissions",
       "type": "shell",
       "command": "xhost +local:docker",
@@ -30,9 +56,12 @@
     },
     {
       "label": "Prepare Environment",
+      "runOptions": {
+        "runOn": "folderOpen"
+      },
       "dependsOn": [
-        // "Start Vite Server",
-        "Set X11 Permissions"
+        "Start Vite Server",
+        // "Set X11 Permissions"
       ],
       "problemMatcher": []
     },
@@ -47,7 +76,7 @@
       "type": "shell",
       "command": "ollama run qwen2.5-coder:0.5b ''",
       "runOptions": {
-        "runOn_X": "folderOpen"
+        // "runOn": "folderOpen"
       },
       "presentation": {
         "reveal": "silent",

@@ -1,5 +1,5 @@
 define([], function () {
-  console.log("show_repo loading");
+  // console.log("show_repo loading");
   const shows = [
     {
       id: 1408,
@@ -51,13 +51,27 @@ define([], function () {
   function getShows() {
     return shows;
   }
+  async function getServer() {
+    const url = "http://localhost:1701/shows";
+    try {
+      const response = await fetch(url);
+      if (!response.ok) throw new Error(`Response status: ${response.status}`);
+
+      const result = await response.json();
+      console.log(result);
+      return result.programs;
+    } catch (error) {
+      console.error(error.message);
+    }
+  }
 
   function init() {}
 
   init();
-  console.log("show_repo loaded");
+  // console.log("show_repo loaded");
   return {
     init: init,
-    getShows: getShows
+    getShows: getShows,
+    getServer: getServer
   };
 });

@@ -43,7 +43,17 @@
             ]
         },
         {
-            "name": "Docker Launch Tizen 4",
+            "name": "Debug Tizen App (Chrome 79) windows",
+            "type": "node",
+            "request": "launch",
+            "preLaunchTask": "Start Tizen Chrome 79",
+            "runtimeExecutable": "echo",
+            "args": [
+                "Container launched successfully"
+            ]
+        },
+        {
+            "name": "Docker Launch Tizen 4 linux",
             "type": "node-terminal",
             "request": "launch",
             "command": "docker run --rm -it --net=host --privileged -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix chrome56-tizen-test",

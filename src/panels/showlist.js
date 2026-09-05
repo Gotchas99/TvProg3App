@@ -66,11 +66,12 @@ define(["3rd_party/spatial_navigation", "repo/repo", "util"], function (
   }
 
   // --- 4. Event Delegation Handler ---
-  function handleChannelSelect(targetCard) {
-    const channelId = targetCard.getAttribute("data-id");
+  function handleProgramSelect(targetCard) {
+    const program_id = targetCard.getAttribute("data-id");
     const name = targetCard.querySelector(".card-name").textContent;
 
-    console.log("Action triggered on: ", name);
+    console.log("Action triggered on: ", name, " that has id: ", program_id);
+
     util.logThis("Action triggered on: " + name);
 
     // Example UI response: visual active feedback
@@ -90,7 +91,7 @@ define(["3rd_party/spatial_navigation", "repo/repo", "util"], function (
      */
     gridContainer.addEventListener("click", function (event) {
       const card = event.target.closest(".program-card");
-      if (card) handleChannelSelect(card);
+      if (card) handleProgramSelect(card);
     });
 
     // B. Keydown Listener (Handles D-Pad Enter / OK key on Smart TVs)
@@ -104,27 +105,30 @@ define(["3rd_party/spatial_navigation", "repo/repo", "util"], function (
         event.preventDefault();
 
         const card = event.target.closest(".program-card");
-        if (card) handleChannelSelect(card);
+        if (card) handleProgramSelect(card);
       }
     });
 
     const refresh = document.getElementById("btn-refresh");
     if (!refresh) return;
 
-    refresh.addEventListener("click", function (evt) {
+    refresh.addEventListener("click", async function (_evt) {
       util.logThis("refresh button clicked");
       const showlistrepo = repo.show_repo;
       shows = showlistrepo.getShows();
+      shows = await showlistrepo.getServer();
       renderProgramGrid(shows);
     });
-    refresh.addEventListener("keydown", function (e) {
+    refresh.addEventListener("keydown", async function (e) {
       util.logThis("refresh button something: " + e.keyCode + " - " + e.key);
       switch (e.keyCode) {
         case 13: // Tizen Enter key
           util.logThis("refresh button press enter");
           const showlistrepo = repo.show_repo;
           shows = showlistrepo.getShows();
+          shows = await showlistrepo.getServer();
           renderProgramGrid(shows);
+          // event.preventDefault();
           break;
       }
     });
@@ -136,9 +140,10 @@ define(["3rd_party/spatial_navigation", "repo/repo", "util"], function (
     // gridContainer.removeEventListener("click",
   }
 
-  function init() {
+  async function init() {
     const showlistrepo = repo.show_repo;
     shows = showlistrepo.getShows();
+    shows = await showlistrepo.getServer();
     initSpatialNavigation();
   }
   function show() {
