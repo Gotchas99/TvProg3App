@@ -1,159 +1,140 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <!-- Force Tizen's Web Engine to not cache index.html -->
-    <meta
-      http-equiv="Cache-Control"
-      content="no-cache, no-store, must-revalidate"
-    />
-    <meta http-equiv="Pragma" content="no-cache" />
-    <meta http-equiv="Expires" content="0" />
-    <title>TvProg3App</title>
-    <link rel="icon" type="image/png" href="icon.png" />
-    <link rel="stylesheet" type="text/css" href="css/style.css" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- MUST be included FIRST before any application JS executes -->
-    <script type="text/javascript" src="$WEBAPIS/webapis/webapis.js"></script>
-    <script data-main="src/main" src="src/3rd_party/require.js"></script>
-    <!-- Version/Feature Guard for Chrome 56 / Tizen 4 Dev Reloading -->
-    <script>
-      (function () {
-        // Chrome 56 is Chrome v56; import.meta support started in Chrome 80
-        var rawMatch = navigator.userAgent.match(/Chrome\/(\d+)/);
-        var chromeVersion = rawMatch ? parseInt(rawMatch[1], 10) : 999;
 
-        // Guard: Only run custom WebSocket polling on old Chromium engines (< Chrome 60)
-        // Chrome 56 in docker presents as "Chrome/57"
-        if (chromeVersion < 60) {
-          console.log("Chrome < 60");
-          var host = window.location.host;
-          var ws = new WebSocket("ws://" + host + "/");
+<head>
+  <meta charset="UTF-8" />
+  <!-- Force Tizen's Web Engine to not cache index.html -->
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+  <title>TvProg3App</title>
+  <link rel="icon" type="image/png" href="icon.png" />
+  <link rel="stylesheet" type="text/css" href="css/style.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- MUST be included FIRST before any application JS executes -->
+  <script type="text/javascript" src="$WEBAPIS/webapis/webapis.js"></script>
+  <script data-main="src/main" src="src/3rd_party/require.js"></script>
+  <!-- Version/Feature Guard for Chrome 56 / Tizen 4 Dev Reloading -->
+  <script>
+    (function () {
+      // Chrome 56 is Chrome v56; import.meta support started in Chrome 80
+      var rawMatch = navigator.userAgent.match(/Chrome\/(\d+)/);
+      var chromeVersion = rawMatch ? parseInt(rawMatch[1], 10) : 999;
 
-          ws.onmessage = function (event) {
-            try {
-              var data = JSON.parse(event.data);
-              // Vite broadcasts 'full-reload' or 'update' on file saves
-              if (data.type === "full-reload" || data.type === "update") {
-                window.location.reload();
-              }
-            } catch (e) {
-              // Ignore non-JSON system frames
-            }
-          };
+      // Guard: Only run custom WebSocket polling on old Chromium engines (< Chrome 60)
+      // Chrome 56 in docker presents as "Chrome/57"
+      if (chromeVersion < 60) {
+        console.log("Chrome < 60");
+        var host = window.location.host;
+        var ws = new WebSocket("ws://" + host + "/");
 
-          ws.onclose = function () {
-            // Auto-reconnect if dev server restarts
-            setTimeout(function () {
+        ws.onmessage = function (event) {
+          try {
+            var data = JSON.parse(event.data);
+            // Vite broadcasts 'full-reload' or 'update' on file saves
+            if (data.type === "full-reload" || data.type === "update") {
               window.location.reload();
-            }, 2000);
-          };
-        } else console.log("modern browser");
-      })();
-    </script>
-  </head>
+            }
+          } catch (e) {
+            // Ignore non-JSON system frames
+          }
+        };
 
-  <body>
-    <div class="layout">
-      <nav id="sidemenu" class="sidemenu">
-        <h2>Navigation</h2>
-        <h3>v2</h3>
-        <ul>
-          <li>
-            <a
-              href="#"
-              data-target="panel-showlist"
-              class="focusable default-item"
-              >Show list</a
-            >
-          </li>
-          <li>
-            <a href="#" data-target="panel-blacklist" class="focusable"
-              >Blacklist</a
-            >
-          </li>
-          <li>
-            <a href="#" data-target="panel-want" class="focusable"
-              >Want to see</a
-            >
-          </li>
-          <li>
-            <a href="#" data-target="panel-what" class="focusable"
-              >What to see</a
-            >
-          </li>
-          <li>
-            <a href="#" data-target="panel-settings" class="focusable"
-              >Settings</a
-            >
-          </li>
-        </ul>
-      </nav>
+        ws.onclose = function () {
+          // Auto-reconnect if dev server restarts
+          setTimeout(function () {
+            window.location.reload();
+          }, 2000);
+        };
+      } else console.log("modern browser");
+    })();
+  </script>
+</head>
 
-      <main id="panels" class="panels">
-        <!-- <h1>Main Content Area</h1>
-            <p>This area automatically expands to take up the remaining width.</p> -->
-        <section id="panel-home" class="view-panel_X">
-          <h2>Welcome</h2>
-        </section>
+<body>
+  <div class="layout">
+    <nav id="sidemenu" class="sidemenu">
+      <h2>Navigation</h2>
+      <ul>
+        <li>
+          <a href="#" data-target="panel-showlist" class="focusable default-item">Show list</a>
+        </li>
+        <li>
+          <a href="#" data-target="panel-blacklist" class="focusable">Blacklist</a>
+        </li>
+        <li>
+          <a href="#" data-target="panel-want" class="focusable">Want to see</a>
+        </li>
+        <li>
+          <a href="#" data-target="panel-what" class="focusable">What to see</a>
+        </li>
+        <li>
+          <a href="#" data-target="panel-settings" class="focusable">Settings</a>
+        </li>
+      </ul>
+    </nav>
 
-        <section id="panel-default" class="view-panel active">
-          <h2>Default page</h2>
-        </section>
+    <main id="panels" class="panels">
+      <!-- <h1>Main Content Area</h1>
+        <p>This area automatically expands to take up the remaining width.</p> -->
+      <section id="panel-home" class="view-panel_X">
+        <h2>Welcome</h2>
+      </section>
+      <section id="error-panel" class="">Server inte tillgänglig</section>
 
-        <section id="panel-showlist" class="view-panel">
-          <h2>Showlist</h2>
-          <button id="btn-refresh">Refresh list</button>
-          <input type="text" id="this" placeholder="this" />
-          <!-- <input type="text" id="that" placeholder="that" />
+      <section id="panel-default" class="view-panel active">
+        <h2>Default page</h2>
+      </section>
+
+      <section id="panel-showlist" class="view-panel">
+        <h2>Showlist</h2>
+        <button id="btn-refresh">Refresh list</button>
+        <input type="text" id="this" placeholder="this" />
+        <!-- <input type="text" id="that" placeholder="that" />
           <input type="text" id="other" placeholder="other" /> -->
-          <!-- Container where items will be dynamically injected -->
-          <div id="program-grid"></div>
-        </section>
+        <!-- Container where items will be dynamically injected -->
+        <div id="program-grid"></div>
+      </section>
 
-        <section id="panel-blacklist" class="view-panel">
-          <h2>Blacklist</h2>
-          <input type="text" id="blacklist" placeholder="blacklist" />
-          <button id="btn-save">Save</button>
-        </section>
+      <section id="panel-blacklist" class="view-panel">
+        <h2>Blacklist</h2>
+        <input type="text" id="blacklist" placeholder="blacklist" />
+        <button id="btn-save">Save</button>
+      </section>
 
-        <section id="panel-want" class="view-panel">
-          <h2>Want to see</h2>
-          <input type="text" id="want" placeholder="want" />
-          <button id="btn-save">Save</button>
-        </section>
+      <section id="panel-want" class="view-panel">
+        <h2>Want to see</h2>
+        <input type="text" id="want" placeholder="want" />
+        <button id="btn-save">Save</button>
+      </section>
 
-        <section id="panel-what" class="view-panel">
-          <h2>What to see next</h2>
-          <input type="text" id="what" placeholder="what" />
-          <button id="btn-save">Save</button>
-        </section>
+      <section id="panel-what" class="view-panel">
+        <h2>What to see next</h2>
+        <input type="text" id="what" placeholder="what" />
+        <button id="btn-save">Save</button>
+      </section>
 
-        <section id="panel-settings" class="view-panel">
-          <h2>Settings Form</h2>
-          <input type="text" id="setting-name" placeholder="Name" />
-          <button id="btn-save">Save</button>
-        </section>
-        <hr />
-        <textarea
-          name="log"
-          id="log"
-          class="focusable"
-          rows="30"
-          cols="80"
-        ></textarea>
-      </main>
+      <section id="panel-settings" class="view-panel">
+        <h2>Settings Form</h2>
+        <input type="text" id="setting-name" placeholder="Name" />
+        <button id="btn-save">Save</button>
+      </section>
+      <hr />
+      <textarea name="log" id="log" class="focusable" rows="30" cols="80"></textarea>
+    </main>
+  </div>
+  <div id="app"></div>
+  <template id="program-card-template">
+    <div class="program-card focusable">
+      <img src="" alt="" class="card-poster" />
+      <h3 class="card-name"></h3>
+      <div class="card-tagline"></div>
+      <span class="card-vote_average"></span>
+      <span class="card-imdbRating"></span>
+      <span class="card-title_type"></span>
+      <span class="card-status"></span>
     </div>
-    <div id="app"></div>
-    <template id="program-card-template">
-      <div class="program-card focusable">
-        <img src="" alt="" class="card-poster" />
-        <h3 class="card-name"></h3>
-        <div class="card-tagline"></div>
-        <span class="card-vote_average"></span>
-        <span class="card-title_type"></span>
-        <span class="card-status"></span>
-      </div>
-    </template>
-  </body>
+  </template>
+</body>
+
 </html>

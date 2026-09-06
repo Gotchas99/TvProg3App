@@ -29,8 +29,6 @@ define([
     else console.error("PanelMap not found", panel.id);
     // Make the *currently existing* navigable elements focusable.
     SpatialNavigation.makeFocusable("panels");
-    // Focus the default element of the 'panels' section
-    // SpatialNavigation.focus("panels");
   }
   /**
    * @param {HTMLElement} panel
@@ -58,13 +56,6 @@ define([
     });
     // Make the *currently existing* navigable elements focusable.
     SpatialNavigation.makeFocusable();
-
-    // Update active state on navigation buttons if present
-    // navLinks.forEach(function (link) {
-    //   if (link.getAttribute("data-target") === targetPanel.id)
-    //     link.classList.add("active");
-    //   else link.classList.remove("active");
-    // });
   }
 
   // Common navigation trigger executor
@@ -203,13 +194,3 @@ define([
     init: setupSpatialNav
   };
 });
-
-// document.addEventListener("keydown", function (ev) {
-//     // Tizen Return / Back key codes
-//     if (ev.key === "GoBack" || ev.key === "Back" || ev.keyCode === 10009) {
-//         ev.preventDefault();
-
-//         // Return focus to the left side menu
-//         setFocus(focusItemNo);
-//     }
-// });

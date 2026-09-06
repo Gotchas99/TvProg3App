@@ -19,6 +19,7 @@ define(["3rd_party/spatial_navigation", "repo/repo", "util"], function (
     const nameEl = clone.querySelector(".card-name");
     const taglineEl = clone.querySelector(".card-tagline");
     const vote_averageEl = clone.querySelector(".card-vote_average");
+    const imdbRatingEl = clone.querySelector(".card-imdbRating");
     const title_typeEl = clone.querySelector(".card-title_type");
     const statusEl = clone.querySelector(".card-status");
 
@@ -28,6 +29,7 @@ define(["3rd_party/spatial_navigation", "repo/repo", "util"], function (
     nameEl.textContent = data.name;
     taglineEl.textContent = data.tagline;
     vote_averageEl.textContent = data.vote_average;
+    imdbRatingEl.textContent = data.imdbRating;
     title_typeEl.textContent = data.title_type;
     statusEl.textContent = data.status;
 
@@ -71,7 +73,6 @@ define(["3rd_party/spatial_navigation", "repo/repo", "util"], function (
     const name = targetCard.querySelector(".card-name").textContent;
 
     console.log("Action triggered on: ", name, " that has id: ", program_id);
-
     util.logThis("Action triggered on: " + name);
 
     // Example UI response: visual active feedback
@@ -115,7 +116,7 @@ define(["3rd_party/spatial_navigation", "repo/repo", "util"], function (
     refresh.addEventListener("click", async function (_evt) {
       util.logThis("refresh button clicked");
       const showlistrepo = repo.show_repo;
-      shows = showlistrepo.getShows();
+      // shows = showlistrepo.getShows();
       shows = await showlistrepo.getServer();
       renderProgramGrid(shows);
     });
@@ -125,7 +126,7 @@ define(["3rd_party/spatial_navigation", "repo/repo", "util"], function (
         case 13: // Tizen Enter key
           util.logThis("refresh button press enter");
           const showlistrepo = repo.show_repo;
-          shows = showlistrepo.getShows();
+          // shows = showlistrepo.getShows();
           shows = await showlistrepo.getServer();
           renderProgramGrid(shows);
           // event.preventDefault();
@@ -141,14 +142,23 @@ define(["3rd_party/spatial_navigation", "repo/repo", "util"], function (
   }
 
   async function init() {
+    console.log("init entry");
+
     const showlistrepo = repo.show_repo;
-    shows = showlistrepo.getShows();
-    shows = await showlistrepo.getServer();
+    // shows = showlistrepo.getShows();
+    // shows = await showlistrepo.getServer();
+    showlistrepo.getServer().then(res => {
+      shows = res;
+      renderProgramGrid(shows);
+    });
     initSpatialNavigation();
+    console.log("init exit");
   }
   function show() {
+    console.log("show entry");
     renderProgramGrid(shows);
     initEventDelegation();
+    console.log("show exit");
   }
   function hide() {
     removeEventDelegation();

@@ -1,6 +1,6 @@
 define([], function () {
   // console.log("show_repo loading");
-  const shows = [
+  let shows = [
     {
       id: 1408,
       imdb_id: "tt0412142",
@@ -53,15 +53,22 @@ define([], function () {
   }
   async function getServer() {
     const url = "http://localhost:1701/shows";
+    const errorPanel = document.getElementById("error-panel");
     try {
       const response = await fetch(url);
-      if (!response.ok) throw new Error(`Response status: ${response.status}`);
+      if (!response.ok) {
+        errorPanel.classList.add("has-error");
+        throw new Error(`Response status: ${response.status}`);
+      }
+      errorPanel.classList.remove("has-error");
 
       const result = await response.json();
       console.log(result);
+      shows = result.programs;
       return result.programs;
     } catch (error) {
       console.error(error.message);
+      errorPanel.classList.add("has-error");
     }
   }
 

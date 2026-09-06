@@ -1,6 +1,10 @@
 * {
   box-sizing: border-box;
-  font-family: Lucida Sans, Arial, Helvetica, sans-serif;
+  font-family:
+    Lucida Sans,
+    Arial,
+    Helvetica,
+    sans-serif;
 }
 
 body {
@@ -83,19 +87,30 @@ body.is-pc {
 .view-panel.active {
   display: block;
 }
+#error-panel {
+  display: none;
+}
+#error-panel.has-error {
+  display: block;
+  background-color: red;
+  color: #fff;
+  font-weight: bold;
+  padding: 20px 6px;
+}
 
 /* channel cards *************************'' */
 #program-grid {
   display: flex;
-  flex-wrap: wrap;    /* Enables multi-line wrapping */
-    gap: 16px;
+  flex-wrap: wrap; /* Enables multi-line wrapping */
+  gap: 16px;
   padding: 20px;
 }
 
 .program-card {
   /* width: 220px; */
   /* Put #2 here (replaces width: 220px) */
-    flex: 0 0 220px;background: #2a2a2a;
+  flex: 0 0 220px;
+  background: #2a2a2a;
   color: #ffffff;
   border-radius: 8px;
   padding: 16px;
@@ -120,7 +135,8 @@ body.is-pc {
   padding-bottom: 8px;
 }
 
-.card-vote_average {
+.card-vote_average,
+.card-imdbRating {
   background: #00d2ff;
   color: #000;
   font-weight: bold;
