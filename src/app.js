@@ -1,7 +1,15 @@
 // console.log("app loading");
 
-define(["tizen", "nav"], function (_tizen, _nav) {
-  function initApp() {}
+define(["tizen", "panels/sidemenu"], function (_tizen, _sidemnu) {
+  function initApp() {
+    // Hantera kryssruta för att visa TV-layout även på PC
+    const tvCheckbox = document.getElementById("showAsTvLabel");
+    if (tvCheckbox)
+      tvCheckbox.addEventListener("change", event => {
+        if (event.target.checked) document.body.classList.remove("is-pc");
+        else document.body.classList.add("is-pc");
+      });
+  }
 
   /**
    * @param {String} src - Text to log.

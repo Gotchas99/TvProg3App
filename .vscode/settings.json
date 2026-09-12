@@ -7,5 +7,6 @@
     },
     "files.watcherExclude": {
         "**/Debugx/**": true
-    }
+    },
+    "tizen.rds.enabled": true
 }

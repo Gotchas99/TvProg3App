@@ -55,6 +55,10 @@
   <div class="layout">
     <nav id="sidemenu" class="sidemenu">
       <h2>Navigation</h2>
+      <label id="showAsTvLabel" style="display:none">
+        <input type="checkbox" id="showAsTv" name="showAsTv" value="active">
+        TV-layout
+      </label>
       <ul>
         <li>
           <a href="#" data-target="panel-showlist" class="focusable default-item">Show list</a>
@@ -124,6 +128,8 @@
     </main>
   </div>
   <div id="app"></div>
+  <!-- RÖD LINJE FÖR ATT VISA VAR TV SLUTAR -->
+  <div class="target-rectangle" />
   <template id="program-card-template">
     <div class="program-card focusable">
       <img src="" alt="" class="card-poster" />

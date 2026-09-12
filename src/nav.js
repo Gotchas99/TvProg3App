@@ -1,25 +1,4 @@
-define([
-  "3rd_party/spatial_navigation",
-  "panels/default",
-  "panels/showlist",
-  "panels/blacklist",
-  "panels/settings"
-], function (SpatialNavigation, defaultPanel, showlist, blacklist, settings) {
-  // #region variables
-  /** @type {HTMLElement | null} */
-  const sidemenu = document.getElementById("sidemenu");
-  /** @type {NodeListOf<HTMLAnchorElement>} */
-  const navLinks = document.querySelectorAll("#sidemenu a");
-  /** @type {NodeListOf<HTMLElement>} */
-  const viewPanels = document.querySelectorAll("#panels .view-panel");
-  /** @type {NodeListOf<HTMLElement>} */
-  const panelMap = {
-    "panel-default": defaultPanel,
-    "panel-showlist": showlist,
-    "panel-settings": settings
-  };
-  // #endregion
-
+define(["3rd_party/spatial_navigation"], function (SpatialNavigation) {
   /**
    * @param {HTMLElement} panel
    */
@@ -56,21 +35,6 @@ define([
     });
     // Make the *currently existing* navigable elements focusable.
     SpatialNavigation.makeFocusable();
-  }
-
-  // Common navigation trigger executor
-  /**
-   * @param {HTMLElement|Element} element
-   */
-  function handleTrigger(element) {
-    // 1. Read the target ID string (e.g., "data-target")
-    const el = element.closest("[data-target]");
-    if (el) {
-      const targetId = el.dataset.target;
-      const targetPanel = document.getElementById(targetId);
-      if (targetPanel) navigateTo(targetPanel);
-      else console.error("targetPanel not found");
-    } else console.error("no data-target");
   }
 
   function setupSpatialNav() {
@@ -186,11 +150,11 @@ define([
   }
   // #endregion
 
-  setupSpatialNav();
-  initEventHandlers();
-  const firstEl = sidemenu.getElementsByTagName("a")[0];
-  handleTrigger(firstEl);
-  return {
-    init: setupSpatialNav
-  };
+  function init() {
+    setupSpatialNav();
+  }
+
+  init();
+
+  return {};
 });

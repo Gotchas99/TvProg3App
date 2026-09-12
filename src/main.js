@@ -55,7 +55,10 @@ requirejs(["app", "polyfill"], function (_app, _polyfill) {
   );
 
   // If NOT a TV, add .is-pc to the <body> element
-  if (!isTV) document.body.classList.add("is-pc");
+  if (!isTV) {
+    document.body.classList.add("is-pc");
+    document.getElementById("showAsTvLabel").style.display = "block";
+  }
 });
 
 // console.log("main loaded");

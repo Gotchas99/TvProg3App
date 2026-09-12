@@ -56,11 +56,7 @@ define([], function () {
     const errorPanel = document.getElementById("error-panel");
     try {
       const response = await fetch(url);
-      if (!response.ok) {
-        errorPanel.classList.add("has-error");
-        throw new Error(`Response status: ${response.status}`);
-      }
-      errorPanel.classList.remove("has-error");
+      if (!response.ok) throw new Error(`Response status: ${response.status}`);
 
       const result = await response.json();
       console.log(result);
@@ -68,7 +64,6 @@ define([], function () {
       return result.programs;
     } catch (error) {
       console.error(error.message);
-      errorPanel.classList.add("has-error");
     }
   }
 
