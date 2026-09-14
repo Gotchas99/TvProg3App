@@ -1,9 +1,30 @@
-define(["3rd_party/spatial_navigation"], function (SpatialNavigation) {
+define(["3rd_party/spatial_navigation", "util"], function (
+  SpatialNavigation,
+  util
+) {
+  // #region variables
+  /** @type {NodeListOf<HTMLElement>} */
+  const viewPanels = document.querySelectorAll("#panels .view-panel");
+  const panelMap = {};
+  // #endregion
+
+  /**
+   * @param string  panelID
+   */
+  async function moduleForPanel(panelID) {
+    const panelName = panelID.split("-")[1];
+    console.log("Hide panel: " + panelName);
+    const newModule = await util.loadModuleAsync("panels/" + panelName);
+
+    console.log("module loaded : " + panelName); //prints 1
+    panelMap[panelID] = newModule;
+    return newModule; //prints 2
+  }
   /**
    * @param {HTMLElement} panel
    */
-  function onPageShow(panel) {
-    const p = panelMap[panel.id];
+  async function onPageShow(panel) {
+    const p = await moduleForPanel(panel.id);
     if (p) p.show();
     else console.error("PanelMap not found", panel.id);
     // Make the *currently existing* navigable elements focusable.
@@ -12,16 +33,22 @@ define(["3rd_party/spatial_navigation"], function (SpatialNavigation) {
   /**
    * @param {HTMLElement} panel
    */
-  function onPageHide(panel) {
-    const p = panelMap[panel.id];
+  async function onPageHide(panel) {
+    const p = await moduleForPanel(panel.id);
     if (p) p.hide();
     else console.error("PanelMap not found", panel.id);
   }
+
   /**
-   * @param {HTMLElement} targetPanel
+   * @param string targetId
    */
-  function navigateTo(targetPanel) {
-    if (!targetPanel) return;
+  function navigateTo(targetId) {
+    if (!targetId) return;
+    const targetPanel = document.getElementById(targetId);
+    if (!targetPanel) {
+      console.error("targetPanel not found");
+      return;
+    }
     viewPanels.forEach(function (panel) {
       if (panel === targetPanel) {
         if (!panel.classList.contains("active")) {
@@ -33,15 +60,13 @@ define(["3rd_party/spatial_navigation"], function (SpatialNavigation) {
         onPageHide(panel);
       }
     });
-    // Make the *currently existing* navigable elements focusable.
-    SpatialNavigation.makeFocusable();
   }
 
   function setupSpatialNav() {
     // Wait for fully loaded to get focus-styling to work
     if (document.readyState !== "complete") {
       // Otherwise wait for the event
-      window.addEventListener("load", setupSpatialNav, { once: true });
+      window.addEventListener("load", setupSpatialNav, {once: true});
       return;
     }
     SpatialNavigation.init();
@@ -97,7 +122,7 @@ define(["3rd_party/spatial_navigation"], function (SpatialNavigation) {
     ];
 
     const eventHandler = function (evt) {
-      console.log(evt.type, evt.target, evt.detail);
+      // console.log(evt.type, evt.target, evt.detail);
     };
 
     validEvents.forEach(function (type) {
@@ -156,5 +181,7 @@ define(["3rd_party/spatial_navigation"], function (SpatialNavigation) {
 
   init();
 
-  return {};
+  return {
+    navigateTo: navigateTo
+  };
 });

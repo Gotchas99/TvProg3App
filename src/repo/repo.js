@@ -4,8 +4,8 @@ define(["repo/show_repo"], function (show_repo) {
   const apiURL = "http://localhost:1701";
   const intervalMs = 5000;
 
-  async function checkServer() {
-    console.log("checking server");
+  async function watchDog() {
+    // console.log("Watchdog: checking server");
     let timeoutId;
     const timeoutPromise = new Promise((_, reject) => {
       timeoutId = setTimeout(() => reject(new Error("Request timeout")), 5000);
@@ -28,7 +28,7 @@ define(["repo/show_repo"], function (show_repo) {
   }
 
   async function startWatchDog() {
-    setInterval(() => checkServer(), intervalMs);
+    setInterval(() => watchDog(), intervalMs);
   }
 
   function init() {

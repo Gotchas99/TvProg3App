@@ -5,7 +5,9 @@ define([
   "util"
 ], function (SpatialNavigation, repo, AppState, util) {
   // console.log("show_details loading");
-  let program = [];
+  let showrepo;
+  let programID;
+  const panel = document.querySelector("#panel-show_details");
 
   function handleProgramSelect(targetCard) {
     const program_id = targetCard.getAttribute("data-id");
@@ -18,6 +20,69 @@ define([
     const currentActive = document.querySelector(".program-card.active");
     if (currentActive) currentActive.classList.remove("active");
     targetCard.classList.add("active");
+  }
+
+  function renderProgramCard(show) {
+    const card = panel.querySelector(".program-card");
+    const posterEl = card.querySelector(".card-poster");
+    const nameEl = card.querySelector(".card-name");
+    const taglineEl = card.querySelector(".card-tagline");
+    const overviewEl = card.querySelector(".card-overview");
+    const vote_averageEl = card.querySelector(".card-vote_average");
+    const imdbRatingEl = card.querySelector(".card-imdbRating");
+    const title_typeEl = card.querySelector(".card-title_type");
+    const statusEl = card.querySelector(".card-status");
+
+    card.setAttribute("data-id", show.id);
+    card.setAttribute("data-target", "channel-player"); // For route/action tracking
+    posterEl.src = show.poster_thumbnail;
+    nameEl.textContent = show.name;
+    taglineEl.textContent = show.tagline;
+    overviewEl.textContent = show.overview;
+    vote_averageEl.textContent = show.vote_average;
+    imdbRatingEl.textContent = show.imdbRating;
+    title_typeEl.textContent = show.title_type;
+    statusEl.textContent = show.status;
+  }
+
+  function createSeasonCard(data) {
+    const template = document.getElementById("program-season-template");
+
+    const clone = document.importNode(template.content, true);
+    if (!clone) util.logThis("clone failed");
+
+    const card = clone.querySelector(".program-card");
+    const posterEl = clone.querySelector(".card-poster");
+    const nameEl = clone.querySelector(".card-name");
+    const overviewEl = clone.querySelector(".card-overview");
+    const vote_averageEl = clone.querySelector(".card-vote_average");
+    const imdbRatingEl = clone.querySelector(".card-imdbRating");
+    const title_typeEl = clone.querySelector(".card-title_type");
+    const statusEl = clone.querySelector(".card-status");
+
+    card.setAttribute("data-id", data.id);
+    card.setAttribute("data-target", "channel-player"); // For route/action tracking
+    posterEl.src = "https://image.tmdb.org/t/p/w92" + data.poster_path;
+    nameEl.textContent = data.name;
+    overviewEl.textContent = data.overview;
+    vote_averageEl.textContent = data.vote_average;
+    imdbRatingEl.textContent = data.imdbRating;
+    title_typeEl.textContent = data.title_type;
+    statusEl.textContent = data.status;
+
+    return clone;
+  }
+
+  function renderSeasonCards(seasons) {
+    console.log("render season: " + seasons);
+    const container = document.getElementById("season-grid");
+    const fragment = document.createDocumentFragment();
+
+    seasons.forEach(function (item) {
+      fragment.appendChild(createSeasonCard(item));
+    });
+
+    container.replaceChildren(fragment);
   }
 
   // --- 5. Event Delegation Listeners ---
@@ -80,24 +145,31 @@ define([
     // gridContainer.removeEventListener("click",
   }
 
-  async function init() {
-    console.log("init entry");
-    const showlistrepo = repo.show_repo;
-    console.log("init exit");
+  function init() {
+    // console.log("init entry");
+    showrepo = repo.show_repo;
+    // console.log("init exit");
   }
+
   function show() {
-    console.log("show entry");
-    renderProgramGrid(shows);
+    // console.log("show entry");
+    programID = AppState.getSelectedProgram();
+    const program = showrepo.getShow(programID);
+    renderProgramCard(program);
+    showrepo.getSeasons(programID).then(renderSeasonCards);
     initEventDelegation();
-    console.log("show exit");
+    // console.log("show exit");
   }
+
   function hide() {
     removeEventDelegation();
   }
+
   function finalize() {}
 
   init();
   // console.log("show_details loaded");
+
   return {
     init: init,
     show: show,

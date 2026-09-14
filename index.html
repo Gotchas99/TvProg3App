@@ -123,13 +123,40 @@
         <input type="text" id="setting-name" placeholder="Name" />
         <button id="btn-save">Save</button>
       </section>
+
+      <section id="panel-show_details" class="view-panel">
+        <h2>show_details</h2>
+        <div class="program-card focusable">
+          <img src="" alt="" class="card-poster" />
+          <h3 class="card-name"></h3>
+          <div class="card-tagline"></div>
+          <div class="card-overview"></div>
+          <span class="card-vote_average"></span>
+          <span class="card-imdbRating"></span>
+          <span class="card-title_type"></span>
+          <span class="card-status"></span>
+          <div id="season-grid"></div>
+        </div>
+        <template id="program-season-template">
+          <div class="program-card focusable">
+            <img src="" alt="" class="card-poster" />
+            <h3 class="card-name"></h3>
+            <div class="card-overview"></div>
+            <span class="card-vote_average"></span>
+            <span class="card-imdbRating"></span>
+            <span class="card-title_type"></span>
+            <span class="card-status"></span>
+          </div>
+        </template>
+      </section>
+
       <hr />
       <textarea name="log" id="log" class="focusable" rows="30" cols="80"></textarea>
     </main>
   </div>
   <div id="app"></div>
   <!-- RÖD LINJE FÖR ATT VISA VAR TV SLUTAR -->
-  <div class="target-rectangle" />
+  <div class="tv-target-size-line" />
   <template id="program-card-template">
     <div class="program-card focusable">
       <img src="" alt="" class="card-poster" />

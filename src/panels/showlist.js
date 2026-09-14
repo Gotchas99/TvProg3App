@@ -2,8 +2,9 @@ define([
   "3rd_party/spatial_navigation",
   "repo/repo",
   "AppState",
+  "nav",
   "util"
-], function (SpatialNavigation, repo, AppState, util) {
+], function (SpatialNavigation, repo, AppState, nav, util) {
   // console.log("showlist loading");
   // Sample Data
   let shows = [];
@@ -83,6 +84,7 @@ define([
     targetCard.classList.add("active");
 
     AppState.setSelectedProgram(program_id);
+    nav.navigateTo("panel-show_details");
   }
 
   // --- 5. Event Delegation Listeners ---
@@ -146,7 +148,7 @@ define([
   }
 
   async function init() {
-    console.log("init entry");
+    // console.log("init entry");
 
     const showlistrepo = repo.show_repo;
     // shows = showlistrepo.getShows();
@@ -156,18 +158,19 @@ define([
       renderProgramGrid(shows);
     });
     initSpatialNavigation();
-    console.log("init exit");
+    // console.log("init exit");
   }
   function show() {
-    console.log("show entry");
+    // console.log("show entry");
     renderProgramGrid(shows);
     initEventDelegation();
-    console.log("show exit");
+    // console.log("show exit");
   }
   function hide() {
     removeEventDelegation();
   }
   function finalize() {}
+
   init();
   // console.log("showlist loaded");
   return {

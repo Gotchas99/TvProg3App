@@ -26,6 +26,7 @@ body.is-pc {
   overflow-x: hidden;
 }
 
+/* #region Layout and Grid ************************** */
 /* Container Layout (Flexbox for Chrome 56 & Tizen 4) ***************************/
 .layout {
   display: -webkit-box;
@@ -33,7 +34,7 @@ body.is-pc {
   display: flex;
   height: 100%;
 }
-.target-rectangle {
+.tv-target-size-line {
   position: absolute;
   top: 1080px;
   left: 0px; /* Adjust horizontal alignment as needed */
@@ -68,7 +69,7 @@ body.is-pc {
   color: #000000;
 }
 
-/* END OF LAYOUT **********************************/
+/* #endregion **********************************/
 
 .sidemenu ul {
   list-style: none;
@@ -86,11 +87,6 @@ body.is-pc {
 :focus {
   outline: 3px solid #ff0000;
 }
-
-/* Show outline only when navigating via keyboard / TV remote D-pad */
-/* :focus-visible {
-  outline: 3px solid #ff0000;
-} */
 
 /* Hide all pages by default */
 .view-panel {
@@ -112,7 +108,7 @@ body.is-pc {
   padding: 20px 6px;
 }
 
-/* channel cards *************************'' */
+/* #region channel cards *************************'' */
 #program-grid {
   display: flex;
   flex-wrap: wrap; /* Enables multi-line wrapping */
@@ -168,3 +164,4 @@ body.is-pc {
   font-size: 0.85rem;
   margin-top: 8px;
 }
+/* #endregion *************************************** */

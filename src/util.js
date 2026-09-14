@@ -121,10 +121,32 @@ define([], function () {
     };
   }
 
+  async function loadModuleAsync(modulePath) {
+    return new Promise(function (resolve, reject) {
+      require([modulePath], resolve, reject);
+    });
+  }
+
+  function getSelfFilename() {
+    const err = new Error();
+    const stack = err.stack;
+
+    // Parses the last URL line from the stack trace
+    const regex = /(?:https?|file):\/\/[^\/]+\/src\/(.*?)(?:\?|:\d+:\d+)/g;
+    const paths = [];
+    let match;
+
+    while ((match = regex.exec(stack)) !== null) paths.push(match[1]);
+
+    return paths[1];
+  }
+
   return {
     appendToScreenLog: appendToScreenLog,
     logThis: logThis,
-    logToScreen: logToScreen
+    logToScreen: logToScreen,
+    loadModuleAsync: loadModuleAsync,
+    getSelfFilename: getSelfFilename
   };
 });
 

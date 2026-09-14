@@ -51,17 +51,54 @@ define([], function () {
   function getShows() {
     return shows;
   }
+
+  function getShow(programID) {
+    console.log("show_repo getShow entry");
+    const theshow = shows.find(s => {
+      return s.id === +programID;
+    });
+    console.log(theshow);
+    return theshow;
+  }
+
+  async function getSeasons(programID) {
+    console.log("show_repo getShow entry :" + programID);
+    const theshow = shows.find(s => {
+      return s.id === +programID;
+    });
+    if (!theshow.seasons) {
+      theshow.seasons = await retrieveSeasons(programID);
+    }
+    // console.log(theshow.seasons);
+    return theshow.seasons;
+  }
+
   async function getServer() {
     const url = "http://localhost:1701/shows";
-    const errorPanel = document.getElementById("error-panel");
+    // const errorPanel = document.getElementById("error-panel");
     try {
       const response = await fetch(url);
       if (!response.ok) throw new Error(`Response status: ${response.status}`);
 
       const result = await response.json();
-      console.log(result);
+      // console.log(result);
       shows = result.programs;
       return result.programs;
+    } catch (error) {
+      console.error(error.message);
+    }
+  }
+
+  async function retrieveSeasons(id) {
+    const url = `http://localhost:1701/seasons?id=${id}`;
+    // const errorPanel = document.getElementById("error-panel");
+    try {
+      const response = await fetch(url);
+      if (!response.ok) throw new Error(`Response status: ${response.status}`);
+
+      const result = await response.json();
+      // console.log(result);
+      return result;
     } catch (error) {
       console.error(error.message);
     }
@@ -74,6 +111,8 @@ define([], function () {
   return {
     init: init,
     getShows: getShows,
+    getShow: getShow,
+    getSeasons: getSeasons,
     getServer: getServer
   };
 });

@@ -13,6 +13,7 @@ define([], function () {
     const index = observers.topic.indexOf(observer);
     if (index !== -1) observers.topic.splice(index, 1);
   }
+  
   function notifyObservers(topic, data) {
     if (topic in observers) observers.topic.forEach(observer => observer(data));
   }
@@ -30,7 +31,7 @@ define([], function () {
 
   function init() {
     // Initialize your application state here
-    console.log("Application state initialized");
+    // console.log("Application state initialized");
   }
   init();
   return {

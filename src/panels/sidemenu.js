@@ -1,77 +1,22 @@
-define([
-  "nav",
-  "panels/default",
-  "panels/showlist",
-  "panels/show_details",
-  "panels/blacklist",
-  "panels/settings"
-], function (nav, defaultPanel, showlist, show_details, blacklist, settings) {
+define(["nav"], function (nav) {
   // #region variables
   /** @type {HTMLElement | null} */
   const sidemenu = document.getElementById("sidemenu");
   /** @type {NodeListOf<HTMLAnchorElement>} */
   const navLinks = document.querySelectorAll("#sidemenu a");
-  /** @type {NodeListOf<HTMLElement>} */
-  const viewPanels = document.querySelectorAll("#panels .view-panel");
-  /** @type {NodeListOf<HTMLElement>} */
-  const panelMap = {
-    "panel-default": defaultPanel,
-    "panel-showlist": showlist,
-    "panel-settings": settings
-  };
   // #endregion
-
-  /**
-   * @param {HTMLElement} panel
-   */
-  function onPageShow(panel) {
-    const p = panelMap[panel.id];
-    if (p) p.show();
-    else console.error("PanelMap not found", panel.id);
-    // Make the *currently existing* navigable elements focusable.
-    SpatialNavigation.makeFocusable("panels");
-  }
-  /**
-   * @param {HTMLElement} panel
-   */
-  function onPageHide(panel) {
-    const p = panelMap[panel.id];
-    if (p) p.hide();
-    else console.error("PanelMap not found", panel.id);
-  }
-  /**
-   * @param {HTMLElement} targetPanel
-   */
-  function navigateTo(targetPanel) {
-    if (!targetPanel) return;
-    viewPanels.forEach(function (panel) {
-      if (panel === targetPanel) {
-        if (!panel.classList.contains("active")) {
-          panel.classList.add("active");
-          onPageShow(targetPanel);
-        }
-      } else if (panel.classList.contains("active")) {
-        panel.classList.remove("active");
-        onPageHide(panel);
-      }
-    });
-    // Make the *currently existing* navigable elements focusable.
-    SpatialNavigation.makeFocusable();
-  }
 
   // Common navigation trigger executor
   /**
    * @param {HTMLElement|Element} element
    */
   function handleTrigger(element) {
-    // 1. Read the target ID string (e.g., "data-target")
     const el = element.closest("[data-target]");
-    if (el) {
-      const targetId = el.dataset.target;
-      const targetPanel = document.getElementById(targetId);
-      if (targetPanel) navigateTo(targetPanel);
-      else console.error("targetPanel not found");
-    } else console.error("no data-target");
+    if (!el) return;
+    const targetId = el.dataset.target;
+    if (!targetId) return;
+
+    nav.navigateTo(targetId);
   }
 
   // #region Event handlers
