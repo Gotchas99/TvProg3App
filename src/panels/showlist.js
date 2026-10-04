@@ -6,7 +6,7 @@ define([
   "util"
 ], function (SpatialNavigation, repo, AppState, nav, util) {
   // console.log("showlist loading");
-  // Sample Data
+  let firstLoad = true;
   let shows = [];
 
   // --- 1. Template Factory Function ---
@@ -23,7 +23,10 @@ define([
     const vote_averageEl = clone.querySelector(".card-vote_average");
     const imdbRatingEl = clone.querySelector(".card-imdbRating");
     const title_typeEl = clone.querySelector(".card-title_type");
-    const statusEl = clone.querySelector(".card-status");
+    const productionStatusEl = card.querySelector(".card-productionStatus");
+    const viewStatusEl = card.querySelector(".card-viewStatus");
+    const availabilityEl = card.querySelector(".card-availability");
+    const watchProvidersEl = card.querySelector(".card-watchProviders");
 
     card.setAttribute("data-id", data.id);
     card.setAttribute("data-target", "channel-player"); // For route/action tracking
@@ -33,12 +36,15 @@ define([
     vote_averageEl.textContent = data.vote_average;
     imdbRatingEl.textContent = data.imdbRating;
     title_typeEl.textContent = data.title_type;
-    statusEl.textContent = data.status;
-
+    productionStatusEl.textContent = data.status;
+    viewStatusEl.textContent = data.viewStatus;
+    watchProvidersEl.textContent = data.watchProviders;
+    availabilityEl.textContent = data.watchProviders.length
+      ? "Available"
+      : "Not Available";
     return clone;
   }
 
-  // --- 2. Render Grid ---
   function renderProgramGrid(items) {
     if (!Array.isArray(items)) return;
     const container = document.getElementById("program-grid");
@@ -52,11 +58,28 @@ define([
     items.forEach(function (item) {
       fragment.appendChild(createProgramCard(item));
     });
-
     container.replaceChildren(fragment);
+    SpatialNavigation.makeFocusable("panels");
+    if (items.length && firstLoad) simEvent();
   }
 
-  // --- 3. Setup Spatial Navigation ---
+  function simEvent() {
+    firstLoad = false;
+    const firstCardElement = document.querySelector(
+      "#program-grid .program-card"
+    );
+
+    const keyEvent = new KeyboardEvent("keydown", {
+      bubbles: true,
+      cancelable: true,
+      keyCode: 13, // Enter / OK key
+      which: 13,
+      key: "Enter"
+    });
+
+    firstCardElement.dispatchEvent(keyEvent);
+  }
+
   function initSpatialNavigation() {
     // Add a dedicated section for the channel grid
     SpatialNavigation.add("program-grid-section", {
@@ -70,7 +93,6 @@ define([
     SpatialNavigation.focus("program-grid-section");
   }
 
-  // --- 4. Event Delegation Handler ---
   function handleProgramSelect(targetCard) {
     const program_id = targetCard.getAttribute("data-id");
     const name = targetCard.querySelector(".card-name").textContent;
@@ -87,72 +109,79 @@ define([
     nav.navigateTo("panel-show_details");
   }
 
-  // --- 5. Event Delegation Listeners ---
   function initEventDelegation() {
     const gridContainer = document.getElementById("program-grid");
     if (!gridContainer) return;
-
-    // A. Click Event Listener (Handles Mouse / Remote Pointer)
-    /**
-     * @param {!Event} event - The '!' means this parameter cannot be null
-     */
-    gridContainer.addEventListener("click", function (event) {
-      const card = event.target.closest(".program-card");
-      if (card) handleProgramSelect(card);
-    });
-
-    // B. Keydown Listener (Handles D-Pad Enter / OK key on Smart TVs)
-    gridContainer.addEventListener("keydown", function (event) {
-      const key = event.key;
-      const keyCode = event.keyCode || event.which;
-
-      // Check for Enter key (Code 13) or Remote OK key
-      if (key === "Enter" || keyCode === 13) {
-        // Prevent browser's automatic synthesized click to avoid duplicate firing
-        event.preventDefault();
-
-        const card = event.target.closest(".program-card");
-        if (card) handleProgramSelect(card);
-      }
-    });
+    gridContainer.addEventListener("click", onGridClick);
+    gridContainer.addEventListener("keydown", onGridKey);
 
     const refresh = document.getElementById("btn-refresh");
     if (!refresh) return;
-
-    refresh.addEventListener("click", async function (_evt) {
-      util.logThis("refresh button clicked");
-      const showlistrepo = repo.show_repo;
-      // shows = showlistrepo.getShows();
-      shows = await showlistrepo.getServer();
-      renderProgramGrid(shows);
-    });
-    refresh.addEventListener("keydown", async function (e) {
-      util.logThis("refresh button something: " + e.keyCode + " - " + e.key);
-      switch (e.keyCode) {
-        case 13: // Tizen Enter key
-          util.logThis("refresh button press enter");
-          const showlistrepo = repo.show_repo;
-          // shows = showlistrepo.getShows();
-          shows = await showlistrepo.getServer();
-          renderProgramGrid(shows);
-          // event.preventDefault();
-          break;
-      }
-    });
+    refresh.addEventListener("click", onRefreshClick);
+    refresh.addEventListener("keydown", onRefreshKeyDown);
   }
   function removeEventDelegation() {
     const gridContainer = document.getElementById("program-grid");
     if (!gridContainer) return;
+    gridContainer.removeEventListener("click", onGridClick);
+    gridContainer.removeEventListener("keydown", onGridKey);
 
-    // gridContainer.removeEventListener("click",
+    const refresh = document.getElementById("btn-refresh");
+    if (!refresh) return;
+    refresh.removeEventListener("click", onRefreshClick);
+    refresh.removeEventListener("keydown", onRefreshKeyDown);
+  }
+
+  /**
+   * @param {!Event} event - The '!' means this parameter cannot be null
+   */
+  function onGridClick(event) {
+    const card = event.target.closest(".program-card");
+    if (card) handleProgramSelect(card);
+  }
+  /**
+   * @param {!Event} event - The '!' means this parameter cannot be null
+   */
+  function onGridKey(event) {
+    const key = event.key;
+    const keyCode = event.keyCode || event.which;
+
+    // Check for Enter key (Code 13) or Remote OK key
+    if (key === "Enter" || keyCode === 13) {
+      // Prevent browser's automatic synthesized click to avoid duplicate firing
+      event.preventDefault();
+
+      const card = event.target.closest(".program-card");
+      if (card) handleProgramSelect(card);
+    }
+  }
+  async function onRefreshClick(_event) {
+    util.logThis("refresh button clicked");
+    const showlistrepo = repo.show_repo;
+    // shows = showlistrepo.getShows();
+    shows = await showlistrepo.getServer();
+    renderProgramGrid(shows);
+  }
+  async function onRefreshKeyDown(event) {
+    util.logThis(
+      "refresh button something: " + event.keyCode + " - " + event.key
+    );
+    switch (event.keyCode) {
+      case 13: // Tizen Enter key
+        util.logThis("refresh button press enter");
+        const showlistrepo = repo.show_repo;
+        // shows = showlistrepo.getShows();
+        shows = await showlistrepo.getServer();
+        renderProgramGrid(shows);
+        // event.preventDefault();
+        break;
+    }
   }
 
   async function init() {
     // console.log("init entry");
 
     const showlistrepo = repo.show_repo;
-    // shows = showlistrepo.getShows();
-    // shows = await showlistrepo.getServer();
     showlistrepo.getServer().then(res => {
       shows = res;
       renderProgramGrid(shows);

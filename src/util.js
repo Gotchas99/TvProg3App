@@ -5,7 +5,7 @@ define([], function () {
   const el = document.getElementById("log");
   if (!(el instanceof HTMLTextAreaElement)) {
     console.error("LogEl not found");
-    return;
+    // return;
   }
   const logEl = el;
   // logEl.value = "------\nAppLog";

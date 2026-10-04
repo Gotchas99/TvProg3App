@@ -1,8 +1,13 @@
 define(["repo/show_repo"], function (show_repo) {
   // console.log("repo loading");
   const errorPanel = document.getElementById("error-panel");
-  const apiURL = "http://localhost:1701";
+  let apiHost;
   const intervalMs = 5000;
+
+  function initiateApiHost() {
+    if (isTV) apiHost = "http://10.0.0.180:1701";
+    else apiHost = "http://localhost:1701";
+  }
 
   async function watchDog() {
     // console.log("Watchdog: checking server");
@@ -12,7 +17,7 @@ define(["repo/show_repo"], function (show_repo) {
     });
     try {
       // Standard fetch without AbortSignal
-      const fetchPromise = fetch(apiURL);
+      const fetchPromise = fetch(apiHost);
       // Race the fetch request against the timeout timer
       const response = await Promise.race([fetchPromise, timeoutPromise]);
       clearTimeout(timeoutId);
@@ -33,6 +38,8 @@ define(["repo/show_repo"], function (show_repo) {
 
   function init() {
     if (errorPanel) startWatchDog();
+    initiateApiHost();
+    show_repo.setApiHost(apiHost);
   }
 
   init();

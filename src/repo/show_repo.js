@@ -1,5 +1,6 @@
 define([], function () {
   // console.log("show_repo loading");
+  let apiHost = "http://localhost:1701";
   let shows = [
     {
       id: 1408,
@@ -48,25 +49,29 @@ define([], function () {
     }
   ];
 
+  function setApiHost(newApiHost) {
+    apiHost = newApiHost;
+  }
+
   function getShows() {
     return shows;
   }
 
   function getShow(programID) {
-    console.log("show_repo getShow entry");
+    // console.log("show_repo getShow entry");
     const theshow = shows.find(s => {
       return s.id === +programID;
     });
-    console.log(theshow);
+    // console.log(theshow);
     return theshow;
   }
 
   async function getSeasons(programID) {
-    console.log("show_repo getShow entry :" + programID);
+    // console.log("show_repo getSeasons entry :" + programID);
     const theshow = shows.find(s => {
       return s.id === +programID;
     });
-    if (!theshow.seasons) {
+    if (theshow && !theshow.seasons) {
       theshow.seasons = await retrieveSeasons(programID);
     }
     // console.log(theshow.seasons);
@@ -74,7 +79,7 @@ define([], function () {
   }
 
   async function getServer() {
-    const url = "http://localhost:1701/shows";
+    const url = apiHost + "/shows";
     // const errorPanel = document.getElementById("error-panel");
     try {
       const response = await fetch(url);
@@ -90,7 +95,7 @@ define([], function () {
   }
 
   async function retrieveSeasons(id) {
-    const url = `http://localhost:1701/seasons?id=${id}`;
+    const url = apiHost + `/seasons?id=${id}`;
     // const errorPanel = document.getElementById("error-panel");
     try {
       const response = await fetch(url);
@@ -113,6 +118,7 @@ define([], function () {
     getShows: getShows,
     getShow: getShow,
     getSeasons: getSeasons,
-    getServer: getServer
+    getServer: getServer,
+    setApiHost: setApiHost
   };
 });

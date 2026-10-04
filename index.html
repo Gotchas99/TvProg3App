@@ -126,7 +126,7 @@
 
       <section id="panel-show_details" class="view-panel">
         <h2>show_details</h2>
-        <div class="program-card focusable">
+        <div class="program-details-card ">
           <img src="" alt="" class="card-poster" />
           <h3 class="card-name"></h3>
           <div class="card-tagline"></div>
@@ -134,29 +134,35 @@
           <span class="card-vote_average"></span>
           <span class="card-imdbRating"></span>
           <span class="card-title_type"></span>
-          <span class="card-status"></span>
-          <div id="season-grid"></div>
+          <span class="card-productionStatus"></span>
+          <span class="card-viewStatus"></span>
+          <span class="card-watchProviders"></span>
+          <span class="card-availability"></span>
         </div>
+        <div id="season-grid">No seasons</div>
+        <!-- Template för Säsongslistan -------------------------------------------->
         <template id="program-season-template">
-          <div class="program-card focusable">
-            <img src="" alt="" class="card-poster" />
+          <div class="season-card focusable">
+            <img src="" alt="" class="card-poster" style="display:block" />
             <h3 class="card-name"></h3>
             <div class="card-overview"></div>
             <span class="card-vote_average"></span>
-            <span class="card-imdbRating"></span>
             <span class="card-title_type"></span>
-            <span class="card-status"></span>
+            <span class="card-viewStatus"></span>
+            <span class="card-watchProviders"></span>
+            <span class="card-availability"></span>
           </div>
         </template>
       </section>
 
-      <hr />
-      <textarea name="log" id="log" class="focusable" rows="30" cols="80"></textarea>
+      <!-- <hr /> -->
+      <textarea style="display:none" name="log" id="log" class="focusable" rows="10" cols="80"></textarea>
     </main>
   </div>
   <div id="app"></div>
   <!-- RÖD LINJE FÖR ATT VISA VAR TV SLUTAR -->
-  <div class="tv-target-size-line" />
+  <div style="display:none" class="tv-target-size-line"></div>
+  <!-- Template för Program-listan -------------------------------------------->
   <template id="program-card-template">
     <div class="program-card focusable">
       <img src="" alt="" class="card-poster" />
@@ -165,7 +171,10 @@
       <span class="card-vote_average"></span>
       <span class="card-imdbRating"></span>
       <span class="card-title_type"></span>
-      <span class="card-status"></span>
+      <span class="card-productionStatus"></span>
+      <span class="card-viewStatus"></span>
+      <span class="card-watchProviders"></span>
+      <span class="card-availability"></span>
     </div>
   </template>
 </body>

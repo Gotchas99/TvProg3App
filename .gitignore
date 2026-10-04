@@ -12,6 +12,7 @@ dist
 dist-ssr
 public/Debug
 Debug
+.tizen-rds
 
 *.local
 #ta inte med denna. den är för stor

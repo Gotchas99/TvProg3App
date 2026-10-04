@@ -13,11 +13,13 @@ define(["3rd_party/spatial_navigation", "util"], function (
    */
   async function moduleForPanel(panelID) {
     const panelName = panelID.split("-")[1];
-    console.log("Hide panel: " + panelName);
-    const newModule = await util.loadModuleAsync("panels/" + panelName);
+    // console.log("moduleForPanel entry: " + panelName);
+    if (viewPanels[panelID]) return panelMap[panelID];
 
-    console.log("module loaded : " + panelName); //prints 1
+    const newModule = await util.loadModuleAsync("panels/" + panelName);
     panelMap[panelID] = newModule;
+    // console.log(panelMap); //prints 1
+    // console.log("moduleForPanel exit: " + panelName); //prints 1
     return newModule; //prints 2
   }
   /**
@@ -122,7 +124,7 @@ define(["3rd_party/spatial_navigation", "util"], function (
     ];
 
     const eventHandler = function (evt) {
-      // console.log(evt.type, evt.target, evt.detail);
+      console.log(evt.type, evt.target, evt.detail, evt);
     };
 
     validEvents.forEach(function (type) {
@@ -177,6 +179,14 @@ define(["3rd_party/spatial_navigation", "util"], function (
 
   function init() {
     setupSpatialNav();
+    document.addEventListener("focusin", () =>
+      console.log(
+        "Actually focused:",
+        document.activeElement.id,
+        document.activeElement.classList,
+        document.activeElement
+      )
+    );
   }
 
   init();

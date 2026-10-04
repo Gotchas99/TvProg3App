@@ -1,4 +1,5 @@
 // console.log("main loading");
+let isTV;
 
 requirejs.config({
   //By default load any module IDs from js/lib
@@ -50,7 +51,7 @@ function suppress_extension_notifications() {
 // Start the main app logic.
 requirejs(["app", "polyfill"], function (_app, _polyfill) {
   // Detect Smart TV platforms (Tizen, webOS, Android TV, etc.)
-  const isTV = /Tizen|Web0S|SmartTV|Maple|Appletv|CrKey|Vizio/i.test(
+  isTV = /Tizen|Web0S|SmartTV|Maple|Appletv|CrKey|Vizio/i.test(
     navigator.userAgent
   );
 

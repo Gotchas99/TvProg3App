@@ -7,6 +7,7 @@
     sans-serif;
 }
 
+html,
 body {
   /* Lock viewport to exact 1080p canvas */
   width: 1920px;
@@ -22,8 +23,10 @@ body {
 body.is-pc {
   width: 100vw;
   height: 100vh;
-  overflow-y: auto;
-  overflow-x: hidden;
+}
+
+:focus {
+  outline: 3px solid #ff0000;
 }
 
 /* #region Layout and Grid ************************** */
@@ -33,11 +36,15 @@ body.is-pc {
   display: -webkit-flex;
   display: flex;
   height: 100%;
+  width: 100%;
+  overflow: hidden;
 }
+
 .tv-target-size-line {
   position: absolute;
   top: 1080px;
-  left: 0px; /* Adjust horizontal alignment as needed */
+  left: 0px;
+  /* Adjust horizontal alignment as needed */
   width: 1920px;
   height: 5px;
   background-color: #cc0000;
@@ -57,19 +64,8 @@ body.is-pc {
   background-color: #1e293b;
   color: #ffffff;
   padding: 1.5rem;
+  overflow-y: auto;
 }
-
-/* Main Content Area (Fills remaining horizontal space) */
-.panels {
-  -webkit-box-flex: 1;
-  -webkit-flex: 1;
-  flex: 1;
-  background-color: #f8fafc;
-  padding: 2rem;
-  color: #000000;
-}
-
-/* #endregion **********************************/
 
 .sidemenu ul {
   list-style: none;
@@ -84,9 +80,34 @@ body.is-pc {
   padding: 0.5rem 0;
 }
 
-:focus {
-  outline: 3px solid #ff0000;
+/* Main Content Area (Fills remaining horizontal space) */
+.panels {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+  flex: 1;
+  height: 100%;
+  max-height: 100%;
+  -webkit-min-height: 0;
+  min-height: 0;
+  -webkit-min-width: 0;
+  min-width: 0;
+  background-color: #f8fafc;
+  padding: 2rem;
+  color: #000000;
+  overflow: hidden !important;
+  /* Outer frame NEVER scrolls */
+
+  /* Must be flex column so active panels inherit height */
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+  flex-direction: column;
 }
+
+/* #endregion **********************************/
 
 /* Hide all pages by default */
 .view-panel {
@@ -95,11 +116,29 @@ body.is-pc {
 
 /* Active page display state */
 .view-panel.active {
-  display: block;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+  flex-direction: column;
+
+  /* CRITICAL FOR CHROME 56 & PC: Standard + Webkit min-height overrides auto-sizing */
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+  flex: 1;
+  -webkit-min-height: 0;
+  min-height: 0;
+  height: 100%;
+  max-height: 100%;
+  overflow: hidden !important;
 }
+
 #error-panel {
   display: none;
 }
+
 #error-panel.has-error {
   display: block;
   background-color: red;
@@ -108,10 +147,11 @@ body.is-pc {
   padding: 20px 6px;
 }
 
-/* #region channel cards *************************'' */
+/* #region program cards *************************'' */
 #program-grid {
   display: flex;
-  flex-wrap: wrap; /* Enables multi-line wrapping */
+  flex-wrap: wrap;
+  /* Enables multi-line wrapping */
   gap: 16px;
   padding: 20px;
 }
@@ -164,4 +204,99 @@ body.is-pc {
   font-size: 0.85rem;
   margin-top: 8px;
 }
+
+/* #endregion *************************************** */
+
+/* #region season cards ************************* */
+#season-grid {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+  flex: 1;
+  -webkit-min-height: 0;
+  min-height: 0;
+  /* Crucial for Chrome flex scrolling calculation */
+
+  overflow-y: auto !important;
+  overflow-x: hidden;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+  flex-direction: column;
+
+  width: 100%;
+  padding: 20px 0;
+  box-sizing: border-box;
+}
+
+#season-grid .program-card,
+#season-grid .season-card {
+  width: 100%;
+  max-width: 600px;
+  /* Narrow vertical card width */
+  margin-bottom: 12px;
+  /* Vertical spacing */
+  -webkit-flex-shrink: 0;
+  flex-shrink: 0;
+  /* Ensures cards maintain full height inside scrollbox */
+
+  background: #2a2a2a;
+  color: #ffffff;
+  border-radius: 8px;
+  padding: 14px 18px;
+  border: 2px solid transparent;
+  outline: none;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+
+#season-grid .program-card:last-child,
+#season-grid .season-card:last-child {
+  margin-bottom: 0;
+}
+
+/* TV Focus State */
+#season-grid .program-card:focus,
+#season-grid .season-card:focus {
+  border-color: #00d2ff;
+  transform: scale(1.02);
+  box-shadow: 0 0 15px rgba(0, 210, 255, 0.5);
+}
+
+#season-grid .card-header {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+  border-bottom: 1px solid #444;
+  padding-bottom: 8px;
+}
+
+#season-grid .card-vote_average,
+#season-grid .card-imdbRating {
+  background: #00d2ff;
+  color: #000;
+  font-weight: bold;
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-right: 12px;
+  /* Replaces unsupported gap on Chrome 56 */
+}
+
+#season-grid .card-name {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+#season-grid .card-tagline {
+  color: #bbb;
+  font-size: 0.85rem;
+  margin-top: 6px;
+}
+
 /* #endregion *************************************** */
