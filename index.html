@@ -128,29 +128,37 @@
         <h2>show_details</h2>
         <div class="program-details-card ">
           <img src="" alt="" class="card-poster" />
-          <h3 class="card-name"></h3>
-          <div class="card-tagline"></div>
-          <div class="card-overview"></div>
-          <span class="card-vote_average"></span>
-          <span class="card-imdbRating"></span>
-          <span class="card-title_type"></span>
-          <span class="card-productionStatus"></span>
-          <span class="card-viewStatus"></span>
-          <span class="card-watchProviders"></span>
-          <span class="card-availability"></span>
+          <div class="card-content">
+            <h3 class="card-name"></h3>
+            <div class="card-tagline"></div>
+            <div class="card-overview"></div>
+            <div class="card-meta">
+              <span class="card-vote_average"></span>
+              <span class="card-imdbRating"></span>
+              <span class="card-title_type"></span>
+              <span class="card-productionStatus"></span>
+              <span class="card-viewStatus"></span>
+              <span class="card-watchProviders"></span>
+              <span class="card-availability"></span>
+            </div>
+          </div>
         </div>
         <div id="season-grid">No seasons</div>
         <!-- Template för Säsongslistan -------------------------------------------->
         <template id="program-season-template">
           <div class="season-card focusable">
             <img src="" alt="" class="card-poster" style="display:block" />
-            <h3 class="card-name"></h3>
-            <div class="card-overview"></div>
-            <span class="card-vote_average"></span>
-            <span class="card-title_type"></span>
-            <span class="card-viewStatus"></span>
-            <span class="card-watchProviders"></span>
-            <span class="card-availability"></span>
+            <div class="card-content">
+              <h3 class="card-name"></h3>
+              <div class="card-overview"></div>
+              <div class="card-meta">
+                <span class="card-vote_average"></span>
+                <span class="card-title_type"></span>
+                <span class="card-viewStatus"></span>
+                <span class="card-watchProviders"></span>
+                <span class="card-availability"></span>
+              </div>
+            </div>
           </div>
         </template>
       </section>

@@ -208,6 +208,31 @@ body.is-pc {
 /* #endregion *************************************** */
 
 /* #region season cards ************************* */
+/* Lock header and program details from shrinking in show_details */
+#panel-show_details>h2,
+#panel-show_details>.program-details-card {
+  -webkit-flex-shrink: 0;
+  flex-shrink: 0;
+}
+
+/* Program Details Card Layout */
+.program-details-card {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: row;
+  flex-direction: row;
+
+  background: #2a2a2a;
+  color: #ffffff;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 16px;
+  max-width: 800px;
+}
+
 #season-grid {
   -webkit-box-flex: 1;
   -webkit-flex: 1;
@@ -232,17 +257,21 @@ body.is-pc {
   box-sizing: border-box;
 }
 
-#season-grid .program-card,
+/* Season Cards Horizontal Alignment */
 #season-grid .season-card {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: row;
+  flex-direction: row;
+
   width: 100%;
-  max-width: 600px;
-  /* Narrow vertical card width */
+  max-width: 800px;
   margin-bottom: 12px;
-  /* Vertical spacing */
   -webkit-flex-shrink: 0;
   flex-shrink: 0;
-  /* Ensures cards maintain full height inside scrollbox */
-
   background: #2a2a2a;
   color: #ffffff;
   border-radius: 8px;
@@ -277,26 +306,79 @@ body.is-pc {
   padding-bottom: 8px;
 }
 
-#season-grid .card-vote_average,
-#season-grid .card-imdbRating {
+/* Poster Sizing */
+.program-details-card .card-poster,
+#season-grid .card-poster {
+  width: 120px;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 6px;
+  margin-right: 16px;
+  /* Space between poster and content for Chrome 56 */
+  -webkit-flex-shrink: 0;
+  flex-shrink: 0;
+  background-color: #1a1a1a;
+  /* Placeholder bg when src is empty */
+}
+
+/* Text Content Column (Right side of poster) */
+.card-content {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+  flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+  flex-direction: column;
+}
+
+.card-content .card-overview {
+  font-size: 0.85rem;
+  color: #ddd;
+  margin-bottom: 12px;
+  line-height: 1.3;
+}
+
+.card-meta .card-vote_average,
+.card-meta .card-imdbRating {
   background: #00d2ff;
   color: #000;
   font-weight: bold;
   padding: 2px 6px;
   border-radius: 4px;
   margin-right: 12px;
-  /* Replaces unsupported gap on Chrome 56 */
+
 }
 
-#season-grid .card-name {
+.card-content .card-name {
   margin: 0;
   font-size: 1.1rem;
 }
 
-#season-grid .card-tagline {
+.card-content .card-tagline {
   color: #bbb;
   font-size: 0.85rem;
   margin-top: 6px;
+}
+
+.card-meta {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-wrap: wrap;
+  flex-wrap: wrap;
+  margin-top: auto;
+  /* Pushes badges to bottom of container */
+}
+
+.card-meta span {
+  display: inline-block;
+  margin-right: 8px;
+  margin-bottom: 6px;
+  font-size: 0.8rem;
 }
 
 /* #endregion *************************************** */
