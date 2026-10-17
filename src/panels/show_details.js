@@ -9,12 +9,15 @@ define([
   let programID;
   const panel = document.querySelector("#panel-show_details");
 
-  function handleSeasonSelect(targetCard) {
-    const program_id = targetCard.getAttribute("data-id");
+  async function handleSeasonSelect(targetCard) {
+    const season_id = targetCard.getAttribute("data-id");
     const name = targetCard.querySelector(".card-name").textContent;
 
-    console.log("Action triggered on: ", name, " that has id: ", program_id);
+    console.log("Action triggered on: ", name, " that has id: ", season_id);
     util.logThis("Action triggered on: " + name);
+    await showrepo.toggleViewState(season_id);
+    const statusEl = targetCard.querySelector(".card-viewStatus");
+    statusEl.textContent = showrepo.getSeason(season_id).viewStatus;
 
     const currentActive = document.querySelector(".season-card.active");
     if (currentActive) currentActive.classList.remove("active");

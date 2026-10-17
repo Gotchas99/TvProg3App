@@ -7,6 +7,11 @@
     sans-serif;
 }
 
+/* body        { font-size: 1rem; }      /* 28px – programme rows */
+/* .meta       { font-size: 0.857rem; }  /* 24px – fine print, the floor */
+/* h2          { font-size: 1.286rem; }  /* 36px – headings */
+/* h1          { font-size: 1.714rem; }  /* 48px – screen title */
+
 html,
 body {
   /* Lock viewport to exact 1080p canvas */
@@ -17,6 +22,8 @@ body {
   padding: 0;
   background-color: #0d0d0d;
   color: #ffffff;
+  /* 1rem = TV body text */
+  font-size: 24px;
 }
 
 /* PC Environment: Responsive & Scrolling */
@@ -282,13 +289,11 @@ body.is-pc {
   cursor: pointer;
 }
 
-#season-grid .program-card:last-child,
 #season-grid .season-card:last-child {
   margin-bottom: 0;
 }
 
 /* TV Focus State */
-#season-grid .program-card:focus,
 #season-grid .season-card:focus {
   border-color: #00d2ff;
   transform: scale(1.02);

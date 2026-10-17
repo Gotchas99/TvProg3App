@@ -124,7 +124,7 @@ define(["3rd_party/spatial_navigation", "util"], function (
     ];
 
     const eventHandler = function (evt) {
-      console.log(evt.type, evt.target, evt.detail, evt);
+      // console.log(evt.type, evt.target, evt.detail, evt);
     };
 
     validEvents.forEach(function (type) {

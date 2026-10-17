@@ -48,6 +48,7 @@ define([], function () {
       title_type: "Show"
     }
   ];
+  const seasonIndex = {};
 
   function setApiHost(newApiHost) {
     apiHost = newApiHost;
@@ -66,6 +67,27 @@ define([], function () {
     return theshow;
   }
 
+  async function toggleViewState(season_id) {
+    try {
+      console.log("show_repo toggleViewState entry: " + season_id);
+      const season = seasonIndex[season_id];
+      const doc = {};
+      if (season.viewStatus === "seen") doc.newStatus = "new";
+      else doc.newStatus = "seen";
+      season.viewStatus = doc.newStatus;
+      const url = apiHost + `/season?id=${season_id}`;
+      const response = await fetch(url, {
+        method: "PATCH",
+        headers: {"Content-Type": "application/merge-patch+json"},
+        body: JSON.stringify(doc)
+      });
+      // console.log("status", response.status);
+    } catch (err) {
+      console.error("toggleViewState failed:", err.name, err.message);
+    }
+    console.log("show_repo toggleViewState exit ");
+  }
+
   async function getSeasons(programID) {
     // console.log("show_repo getSeasons entry :" + programID);
     const theshow = shows.find(s => {
@@ -73,11 +95,22 @@ define([], function () {
     });
     if (theshow && !theshow.seasons) {
       theshow.seasons = await retrieveSeasons(programID);
+      indexSeasons(theshow.seasons);
     }
+
     // console.log(theshow.seasons);
     return theshow.seasons;
   }
+   function getSeason(seasonId) {
+    return seasonIndex[seasonId];
+  }
 
+  function indexSeasons(seasons) {
+    console.log("show_repo indexSeasons entry");
+    seasons.forEach(season => {
+      seasonIndex[season.id] = season;
+    });
+  }
   async function getServer() {
     const url = apiHost + "/shows";
     // const errorPanel = document.getElementById("error-panel");
@@ -118,7 +151,9 @@ define([], function () {
     getShows: getShows,
     getShow: getShow,
     getSeasons: getSeasons,
+    getSeason: getSeason,
     getServer: getServer,
-    setApiHost: setApiHost
+    setApiHost: setApiHost,
+    toggleViewState: toggleViewState
   };
 });
