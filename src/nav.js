@@ -136,47 +136,6 @@ define(["3rd_party/spatial_navigation", "util"], function (
     SpatialNavigation.focus("sidemenu");
   }
 
-  // #region Event handlers
-  /**
-   * Handles directional key presses for TV remote navigation.
-   * @param {PointerEvent} event - The keyboard event object from keydown/keyup.
-   * @returns {void}
-   */
-  function onClick(event) {
-    handleTrigger(event.target);
-  }
-  /**
-   * Handles directional key presses for TV remote navigation.
-   * @param {KeyboardEvent} event - The keyboard event object from keydown/keyup.
-   * @returns {void}
-   */
-  function onKeyDown(event) {
-    const keyCode = event.keyCode;
-    const keyName = event.key;
-
-    // Standard Enter (13) or Tizen/SmartTV OK key (29443 or 13)
-    const isEnterKey =
-      keyCode === 13 || keyCode === 29443 || keyName === "Enter";
-
-    if (isEnterKey) {
-      const activeElement = document.activeElement;
-      if (activeElement && activeElement !== document.body) {
-        handleTrigger(activeElement);
-        event.preventDefault(); // Prevents the browser from firing the subsequent 'click' event
-      }
-    }
-  }
-
-  function initEventHandlers() {
-    if (sidemenu) {
-      // 1. Mouse / Touch click handler
-      sidemenu.addEventListener("click", onClick);
-      // 2. D-Pad / Remote Control Key handler
-      sidemenu.addEventListener("keydown", onKeyDown);
-    } else console.error("Sidemenu not found");
-  }
-  // #endregion
-
   function init() {
     setupSpatialNav();
     document.addEventListener("focusin", () =>

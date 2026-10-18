@@ -14,7 +14,8 @@
         "links": "writable",
         "setFocus": "readonly",
         "clamp": "readonly",
-        "requirejs": "readonly"
+        "requirejs": "readonly",
+        "isTV": "readonly"
     },
     "rules": {
         "no-undef": "error",

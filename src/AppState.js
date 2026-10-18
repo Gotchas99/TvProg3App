@@ -1,33 +1,17 @@
-define([], function () {
-  // #region Observers
-  const observers = {};
-
-  function addObserver(topic, observer) {
-    if (!(topic in observers)) observers.topic = [];
-    // Add only if the exact reference is missing
-    if (!observers.topic.includes(observer)) observers.topic.push(observer);
-  }
-
-  function removeObserver(topic, observer) {
-    // Remove the observer if it exists
-    const index = observers.topic.indexOf(observer);
-    if (index !== -1) observers.topic.splice(index, 1);
-  }
-  
-  function notifyObservers(topic, data) {
-    if (topic in observers) observers.topic.forEach(observer => observer(data));
-  }
-  // #endregion
-
+define(["announcer"], function (announcerModule) {
   let selectedProgram;
+  const announcer = new announcerModule.Announcer();
 
   function setSelectedProgram(aProgram) {
+    if (aProgram === selectedProgram) return;
     selectedProgram = aProgram;
-    notifyObservers("selectedProgram", selectedProgram);
+    announcer.announce(new SelectedProgramEvent());
   }
   function getSelectedProgram() {
     return selectedProgram;
   }
+
+  class SelectedProgramEvent extends announcerModule.Announcement {}
 
   function init() {
     // Initialize your application state here
@@ -35,9 +19,9 @@ define([], function () {
   }
   init();
   return {
-    addObserver: addObserver,
-    removeObserver: removeObserver,
+    announcer: announcer,
     setSelectedProgram: setSelectedProgram,
-    getSelectedProgram: getSelectedProgram
+    getSelectedProgram: getSelectedProgram,
+    SelectedProgramEvent: SelectedProgramEvent
   };
 });

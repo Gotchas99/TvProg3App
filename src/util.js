@@ -21,6 +21,7 @@ define([], function () {
     const updatedText = txt + "\n" + logEl.value;
     const lines = updatedText.split("\n");
     logEl.value = lines.slice(0, MAX_LOG_LINES).join("\n");
+    console.log(txt);
   }
 
   function appendToScreenLog(type, message, details) {

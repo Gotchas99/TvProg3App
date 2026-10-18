@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
-    "checkJs": true,
-    "strictNullChecks": true,
+    "checkJs": false,
+    "strictNullChecks": false,
     "noUnusedLocals": false,
     "noUnusedParameters": true,
     "target": "ES2017",

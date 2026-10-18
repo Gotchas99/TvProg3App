@@ -37,9 +37,9 @@ define(["repo/show_repo"], function (show_repo) {
   }
 
   function init() {
-    if (errorPanel) startWatchDog();
     initiateApiHost();
     show_repo.setApiHost(apiHost);
+    if (errorPanel) startWatchDog();
   }
 
   init();

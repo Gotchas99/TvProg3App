@@ -6,10 +6,11 @@ define([
   "util"
 ], function (SpatialNavigation, repo, AppState, nav, util) {
   // console.log("showlist loading");
+  const showlistrepo = repo.show_repo;
   let firstLoad = true;
   let shows = [];
 
-  // --- 1. Template Factory Function ---
+  // #region rendering
   function createProgramCard(data) {
     const template = document.getElementById("program-card-template");
 
@@ -38,15 +39,14 @@ define([
     title_typeEl.textContent = data.title_type;
     productionStatusEl.textContent = data.status;
     viewStatusEl.textContent = data.viewStatus;
-    watchProvidersEl.textContent = data.watchProviders;
+    watchProvidersEl.textContent = data.watchProviders.join(", ");
     availabilityEl.textContent = data.watchProviders.length
       ? "Available"
       : "Not Available";
     return clone;
   }
 
-  function renderProgramGrid(items) {
-    if (!Array.isArray(items)) return;
+  function renderProgramGrid() {
     const container = document.getElementById("program-grid");
     if (!container) {
       console.error("container not found");
@@ -54,14 +54,14 @@ define([
       return;
     }
     const fragment = document.createDocumentFragment();
-
-    items.forEach(function (item) {
+    shows.forEach(function (item) {
       fragment.appendChild(createProgramCard(item));
     });
     container.replaceChildren(fragment);
     SpatialNavigation.makeFocusable("panels");
-    if (items.length && firstLoad) simEvent();
+    if (shows.length && firstLoad) simEvent();
   }
+  // #endregion rendering
 
   function simEvent() {
     firstLoad = false;
@@ -77,7 +77,7 @@ define([
       key: "Enter"
     });
 
-    firstCardElement.dispatchEvent(keyEvent);
+    // firstCardElement.dispatchEvent(keyEvent);
   }
 
   function initSpatialNavigation() {
@@ -109,6 +109,7 @@ define([
     nav.navigateTo("panel-show_details");
   }
 
+  // #region event handling
   function initEventDelegation() {
     const gridContainer = document.getElementById("program-grid");
     if (!gridContainer) return;
@@ -150,16 +151,13 @@ define([
     if (key === "Enter" || keyCode === 13) {
       // Prevent browser's automatic synthesized click to avoid duplicate firing
       event.preventDefault();
-
-      const card = event.target.closest(".program-card");
-      if (card) handleProgramSelect(card);
+      onGridClick(event);
     }
   }
   async function onRefreshClick(_event) {
     util.logThis("refresh button clicked");
-    const showlistrepo = repo.show_repo;
-    // shows = showlistrepo.getShows();
-    shows = await showlistrepo.getServer();
+    await showlistrepo.retrieveShows();
+    shows = showlistrepo.getShows();
     renderProgramGrid(shows);
   }
   async function onRefreshKeyDown(event) {
@@ -169,30 +167,31 @@ define([
     switch (event.keyCode) {
       case 13: // Tizen Enter key
         util.logThis("refresh button press enter");
-        const showlistrepo = repo.show_repo;
-        // shows = showlistrepo.getShows();
-        shows = await showlistrepo.getServer();
-        renderProgramGrid(shows);
-        // event.preventDefault();
+        event.preventDefault();
+        onRefreshClick(event);
         break;
     }
   }
+  // #endregion event handling
 
   async function init() {
     // console.log("init entry");
-
-    const showlistrepo = repo.show_repo;
-    showlistrepo.getServer().then(res => {
-      shows = res;
-      renderProgramGrid(shows);
+    showlistrepo.retrieveShows().then(res => {
+      shows = showlistrepo.getShows();
+      renderProgramGrid();
     });
     initSpatialNavigation();
     // console.log("init exit");
   }
   function show() {
     // console.log("show entry");
-    renderProgramGrid(shows);
+    renderProgramGrid();
     initEventDelegation();
+    showlistrepo.announcer.when(
+      showlistrepo.ProgramListEvent,
+      renderProgramGrid,
+      this
+    );
     // console.log("show exit");
   }
   function hide() {

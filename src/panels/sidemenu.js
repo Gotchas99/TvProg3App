@@ -2,8 +2,6 @@ define(["nav"], function (nav) {
   // #region variables
   /** @type {HTMLElement | null} */
   const sidemenu = document.getElementById("sidemenu");
-  /** @type {NodeListOf<HTMLAnchorElement>} */
-  const navLinks = document.querySelectorAll("#sidemenu a");
   // #endregion
 
   // Common navigation trigger executor

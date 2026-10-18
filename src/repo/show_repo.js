@@ -1,4 +1,4 @@
-define([], function () {
+define(["announcer"], function (announcerModule) {
   // console.log("show_repo loading");
   let apiHost = "http://localhost:1701";
   let shows = [
@@ -49,6 +49,9 @@ define([], function () {
     }
   ];
   const seasonIndex = {};
+  const announcer = new announcerModule.Announcer();
+  class ProgramListEvent extends announcerModule.Announcement {}
+  class ProgramSeasonEvent extends announcerModule.Announcement {}
 
   function setApiHost(newApiHost) {
     apiHost = newApiHost;
@@ -67,41 +70,19 @@ define([], function () {
     return theshow;
   }
 
-  async function toggleViewState(season_id) {
-    try {
-      console.log("show_repo toggleViewState entry: " + season_id);
-      const season = seasonIndex[season_id];
-      const doc = {};
-      if (season.viewStatus === "seen") doc.newStatus = "new";
-      else doc.newStatus = "seen";
-      season.viewStatus = doc.newStatus;
-      const url = apiHost + `/season?id=${season_id}`;
-      const response = await fetch(url, {
-        method: "PATCH",
-        headers: {"Content-Type": "application/merge-patch+json"},
-        body: JSON.stringify(doc)
-      });
-      // console.log("status", response.status);
-    } catch (err) {
-      console.error("toggleViewState failed:", err.name, err.message);
-    }
-    console.log("show_repo toggleViewState exit ");
-  }
-
   async function getSeasons(programID) {
     // console.log("show_repo getSeasons entry :" + programID);
-    const theshow = shows.find(s => {
-      return s.id === +programID;
-    });
+    const theshow = getShow(programID);
     if (theshow && !theshow.seasons) {
       theshow.seasons = await retrieveSeasons(programID);
       indexSeasons(theshow.seasons);
+      announcer.announce(new ProgramSeasonEvent());
     }
-
     // console.log(theshow.seasons);
     return theshow.seasons;
   }
-   function getSeason(seasonId) {
+
+  function getSeason(seasonId) {
     return seasonIndex[seasonId];
   }
 
@@ -111,7 +92,28 @@ define([], function () {
       seasonIndex[season.id] = season;
     });
   }
-  async function getServer() {
+
+  async function toggleViewState(season_id) {
+    try {
+      // console.log("show_repo toggleViewState entry: " + season_id);
+      const season = seasonIndex[season_id];
+      const doc = {};
+      if (season.viewStatus === "seen") doc.newStatus = "new";
+      else doc.newStatus = "seen";
+      season.viewStatus = doc.newStatus;
+      const url = apiHost + `/season?id=${season_id}`;
+      await fetch(url, {
+        method: "PATCH",
+        headers: {"Content-Type": "application/merge-patch+json"},
+        body: JSON.stringify(doc)
+      });
+    } catch (err) {
+      console.error("toggleViewState failed:", err.name, err.message);
+    }
+    // console.log("show_repo toggleViewState exit ");
+  }
+
+  async function retrieveShows() {
     const url = apiHost + "/shows";
     // const errorPanel = document.getElementById("error-panel");
     try {
@@ -121,6 +123,7 @@ define([], function () {
       const result = await response.json();
       // console.log(result);
       shows = result.programs;
+      announcer.announce(new ProgramListEvent());
       return result.programs;
     } catch (error) {
       console.error(error.message);
@@ -152,8 +155,11 @@ define([], function () {
     getShow: getShow,
     getSeasons: getSeasons,
     getSeason: getSeason,
-    getServer: getServer,
+    retrieveShows: retrieveShows,
     setApiHost: setApiHost,
-    toggleViewState: toggleViewState
+    toggleViewState: toggleViewState,
+    announcer: announcer,
+    ProgramListEvent: ProgramListEvent,
+    ProgramSeasonEvent: ProgramSeasonEvent
   };
 });
